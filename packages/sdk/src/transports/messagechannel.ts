@@ -1,5 +1,5 @@
-import type { WebMCPMessage, WebMCPTransport } from '../types/index.ts';
-import { WebMCPLogger } from '../utils/logger.ts';
+import type { WebMCPMessage, WebMCPTransport } from '../types/index';
+import { WebMCPLogger } from '../utils/logger';
 
 export class MessageChannelTransport implements WebMCPTransport {
   private port: MessagePort | null = null;

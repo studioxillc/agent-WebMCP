@@ -1,5 +1,5 @@
-import { WebMCPClient } from '../client/client.ts';
-import type { WebMCPClientOptions, WebMCPToolDefinition } from '../types/index.ts';
+import { WebMCPClient } from '../client/client';
+import type { WebMCPClientOptions, WebMCPToolDefinition } from '../types/index';
 
 export class WebMCPAgentClient {
   private client: WebMCPClient;

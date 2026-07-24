@@ -7,6 +7,7 @@ This folder contains closed and archived project documents, including completed 
 | ID / Document | Description | Archiving Date | Status |
 | :--- | :--- | :--- | :--- |
 | [EPIC-002](./EPIC-002-web-ui-demo-playground.md) | Web UI Playground for WebMCP Demo App | 2026-07-24 | Completed |
+| [EPIC-003](./EPIC-003-npm-release-pipeline.md) | NPM Release Pipeline & Package Publishing Setup | 2026-07-24 | Completed |
 
 ## How to Archive a Document
 

@@ -1,4 +1,4 @@
-import type { WebMCPToolDefinition, WebMCPToolHandler } from '../../types/index.ts';
+import type { WebMCPToolDefinition, WebMCPToolHandler } from '../../types/index';
 
 export interface RegisteredTool {
   definition: WebMCPToolDefinition;

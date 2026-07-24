@@ -6,8 +6,8 @@ import type {
   WebMCPToolDefinition,
   WebMCPToolHandler,
   WebMCPTransport,
-} from '../types/index.ts';
-import { WebMCPLogger } from '../utils/logger.ts';
+} from '../types/index';
+import { WebMCPLogger } from '../utils/logger';
 
 export class WebMCPServer {
   private transport: WebMCPTransport;

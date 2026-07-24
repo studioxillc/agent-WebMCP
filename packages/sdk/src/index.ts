@@ -1,11 +1,11 @@
-export * from './types/index.ts';
-export * from './client/client.ts';
-export * from './server/server.ts';
-export * from './transports/websocket.ts';
-export * from './transports/messagechannel.ts';
-export * from './utils/logger.ts';
+export * from './types/index';
+export * from './client/client';
+export * from './server/server';
+export * from './transports/websocket';
+export * from './transports/messagechannel';
+export * from './utils/logger';
 
 // High-level Frontend & Backend SDK Wrappers and Starter Kit Tools
-export * from './frontend/index.ts';
-export * from './backend/index.ts';
-export * from './tools/starter-kit/index.ts';
+export * from './frontend/index';
+export * from './backend/index';
+export * from './tools/starter-kit/index';

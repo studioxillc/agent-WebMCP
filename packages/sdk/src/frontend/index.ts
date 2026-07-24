@@ -1,6 +1,6 @@
-import { WebMCPServer } from '../server/server.ts';
-import { getStarterKitTools, type RegisteredTool } from '../tools/starter-kit/index.ts';
-import type { WebMCPToolDefinition, WebMCPToolHandler, WebMCPTransport } from '../types/index.ts';
+import { WebMCPServer } from '../server/server';
+import { getStarterKitTools, type RegisteredTool } from '../tools/starter-kit/index';
+import type { WebMCPToolDefinition, WebMCPToolHandler, WebMCPTransport } from '../types/index';
 
 export interface FrontendBridgeOptions {
   transport: WebMCPTransport;
