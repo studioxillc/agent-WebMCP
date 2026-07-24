@@ -2,6 +2,7 @@
 
 > Official TypeScript SDK for WebMCP — Connecting Web AI agents to browser content and local network resources via the Model Context Protocol.
 
+[![CI](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@thestudioxi/webmcp.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
