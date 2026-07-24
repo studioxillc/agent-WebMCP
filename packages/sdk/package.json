@@ -24,6 +24,9 @@
     "build": "bun build ./src/index.ts --outdir ./dist --target browser --sourcemap && bun x tsc -p tsconfig.json",
     "check": "bun x tsc --noEmit"
   },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
   "keywords": [
     "webmcp",
     "mcp",
