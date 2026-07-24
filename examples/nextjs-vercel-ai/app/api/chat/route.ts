@@ -52,11 +52,8 @@ export async function POST(req: Request) {
   const agentClient = createBackendAgentClient({ transport: backendTransport });
   await agentClient.connect();
 
-  // Convert WebMCP tools into Vercel AI SDK tools format (without server execute so client executes browser tools)
+  // Convert WebMCP tools into Vercel AI SDK tools format with WebMCP execution handler
   const tools = await agentClient.getVercelAITools();
-  for (const t of Object.keys(tools)) {
-    delete (tools[t] as any).execute;
-  }
 
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;

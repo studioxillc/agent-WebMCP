@@ -33,12 +33,18 @@ export default function WebMCPAgentPage() {
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
     api: '/api/chat',
-    async onToolCall({ toolCall }) {
-      if (bridgeRef.current) {
-        console.log(`[WebMCP Browser Execution] Executing tool '${toolCall.toolName}' with args:`, toolCall.args);
-        const result = await bridgeRef.current.executeTool(toolCall.toolName, toolCall.args);
-        console.log(`[WebMCP Browser Result]`, result);
-        return result;
+    onFinish(message) {
+      // Sync browser actions like localStorage when tool invocation completes
+      if (message.toolInvocations) {
+        for (const toolInvocation of message.toolInvocations) {
+          if (toolInvocation.toolName === 'storage_set_item' && toolInvocation.args) {
+            const { key, value } = toolInvocation.args;
+            if (key && value && typeof window !== 'undefined') {
+              window.localStorage.setItem(key, value);
+              console.log(`[WebMCP Client Sync] Saved to localStorage: ${key} = ${value}`);
+            }
+          }
+        }
       }
     },
   });
@@ -53,7 +59,7 @@ export default function WebMCPAgentPage() {
         </div>
         <div className="status-badge">
           <span className="status-dot"></span>
-          WebMCP Client Bridge Active
+          WebMCP Agent Active
         </div>
       </header>
 
@@ -75,7 +81,6 @@ export default function WebMCPAgentPage() {
                     className="send-btn"
                     style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
                     onClick={() => {
-                      const fakeEvent = { preventDefault: () => {} } as any;
                       handleInputChange({ target: { value: "Set local storage key 'user_theme' to 'dark'" } } as any);
                     }}
                   >
