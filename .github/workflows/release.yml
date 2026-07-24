@@ -47,7 +47,7 @@ jobs:
       - name: Build SDK Package
         run: bun run build
 
-      - name: Publish to NPM Registry (Trusted Publishing / OIDC)
+      - name: Publish to NPM Registry
         working-directory: packages/sdk
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -55,8 +55,10 @@ jobs:
           if [ -n "$NODE_AUTH_TOKEN" ]; then
             echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
             echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+            npm publish --access public
+          else
+            npm publish --access public --provenance
           fi
-          npm publish --access public --provenance
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
