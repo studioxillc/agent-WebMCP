@@ -14,9 +14,13 @@
     "graphify": "./scripts/graphify.sh",
     "example:agent": "bun run --cwd examples/agentic-app start",
     "example:web": "bun run --cwd examples/agentic-app dev",
-    "example:next": "bun run --cwd examples/nextjs-vercel-ai dev"
+    "example:next": "bun run --cwd examples/nextjs-vercel-ai dev",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "publish-packages": "changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "@types/bun": "latest",
     "@types/node": "^20.11.0",
     "typescript": "^5.3.3"
