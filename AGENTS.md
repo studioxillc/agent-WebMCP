@@ -16,7 +16,7 @@ Welcome AI Agent! You are working on **agent-WebMCP**, an open-source SDK and to
 
 ## Directory Taxonomy
 
-- `packages/sdk/`: Core `@studioxi/webmcp` package for WebMCP clients, servers, and transports.
+- `packages/sdk/`: Core `@thestudioxi/webmcp` package for WebMCP clients, servers, and transports.
 - `examples/agentic-app/`: Example AI agent application using WebMCP with Pi Agent / DeepAgent pattern.
 - `skills/`: Project-specific skills for AI assistants working in this repository.
 - `docs/`: Repository documentation hierarchy:

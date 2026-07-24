@@ -1,5 +1,5 @@
 {
-  "name": "@zhenximi/webmcp",
+  "name": "@thestudioxi/webmcp",
   "version": "0.1.0",
   "description": "TypeScript SDK for WebMCP - Connecting Web AI agents to browser content and local network resources.",
   "main": "./dist/index.js",

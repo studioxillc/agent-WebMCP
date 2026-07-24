@@ -17,7 +17,7 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@zhenximi/webmcp": ["packages/sdk/src/index.ts"]
+      "@thestudioxi/webmcp": ["packages/sdk/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist", "graphify-out"]

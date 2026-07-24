@@ -1,21 +1,21 @@
-# @zhenximi/webmcp
+# @thestudioxi/webmcp
 
 > Official TypeScript SDK for WebMCP — Connecting Web AI agents to browser content and local network resources via the Model Context Protocol.
 
-[![npm version](https://img.shields.io/npm/v/@zhenximi/webmcp.svg)](https://www.npmjs.com/package/@zhenximi/webmcp)
+[![npm version](https://img.shields.io/npm/v/@thestudioxi/webmcp.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ## Installation
 
 ```bash
 # Using Bun
-bun add @zhenximi/webmcp
+bun add @thestudioxi/webmcp
 
 # Using npm
-npm install @zhenximi/webmcp
+npm install @thestudioxi/webmcp
 
 # Using pnpm / yarn
-pnpm add @zhenximi/webmcp
+pnpm add @thestudioxi/webmcp
 ```
 
 ## Quick Start
@@ -23,7 +23,7 @@ pnpm add @zhenximi/webmcp
 ### 1. Register WebMCP Server & Tools in Frontend
 
 ```typescript
-import { createFrontendBridge, MessageChannelTransport } from '@zhenximi/webmcp';
+import { createFrontendBridge, MessageChannelTransport } from '@thestudioxi/webmcp';
 
 const channel = new MessageChannel();
 const frontendTransport = new MessageChannelTransport(channel.port1);
@@ -50,7 +50,7 @@ await bridge.start();
 ### 2. Connect AI Agent Client in Backend
 
 ```typescript
-import { createBackendAgentClient, MessageChannelTransport } from '@zhenximi/webmcp';
+import { createBackendAgentClient, MessageChannelTransport } from '@thestudioxi/webmcp';
 
 const backendTransport = new MessageChannelTransport(channel.port2);
 
