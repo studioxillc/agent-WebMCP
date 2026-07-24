@@ -94,8 +94,10 @@ export function getNavigationStarterTools(): RegisteredTool[] {
       handler: async (args) => {
         const { url } = args;
         if (typeof window !== 'undefined') {
-          window.location.href = url;
-          return { status: 'navigating', url };
+          if (typeof (window as any).__WEBMCP_NAVIGATE__ === 'function') {
+            (window as any).__WEBMCP_NAVIGATE__(url);
+          }
+          return { status: 'navigated', url, simulated: true };
         }
         return { status: 'navigated', url, mocked: true };
       },

@@ -10,7 +10,8 @@
     "check": "bun x tsc --noEmit",
     "test": "bun test",
     "graphify": "./scripts/graphify.sh",
-    "example:agent": "bun run --cwd examples/agentic-app start"
+    "example:agent": "bun run --cwd examples/agentic-app start",
+    "example:web": "bun run --cwd examples/agentic-app dev"
   },
   "devDependencies": {
     "@types/bun": "latest",

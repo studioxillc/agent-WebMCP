@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebMCP Agent Playground - AI Monorepo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app" class="playground-layout">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-icon">🌐</div>
+        <div class="brand-text">
+          <h1>WebMCP Agentic Playground</h1>
+          <span class="badge monorepo-badge">@webmcp/sdk v0.1.0</span>
+        </div>
+      </div>
+      <div class="status-bar">
+        <div class="status-indicator" id="serverStatus">
+          <span class="dot online"></span>
+          <span class="status-label">WebMCP Server: Active</span>
+        </div>
+        <div class="status-indicator" id="clientStatus">
+          <span class="dot online"></span>
+          <span class="status-label">WebMCP Client: Connected</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Agent Control & Execution Trace -->
+      <section class="panel agent-panel">
+        <div class="panel-header">
+          <h2>🤖 Autonomous Agent Loop</h2>
+          <span class="status-pill" id="agentStatePill">Idle</span>
+        </div>
+
+        <!-- Configuration Bar -->
+        <div class="config-card">
+          <div class="config-row">
+            <div class="field-group">
+              <label for="providerSelect">AI Provider</label>
+              <select id="providerSelect" class="input-select">
+                <option value="gemini">Gemini (gemini-2.5-flash)</option>
+                <option value="openai">OpenAI (gpt-4o)</option>
+                <option value="anthropic">Anthropic (claude-3-5-sonnet)</option>
+                <option value="mock">Mock Mode (Offline Test)</option>
+              </select>
+            </div>
+            <div class="field-group flex-grow">
+              <label for="apiKeyInput">API Key (Optional in Mock mode)</label>
+              <input type="password" id="apiKeyInput" class="input-text" placeholder="Enter API Key or rely on .env" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="objectiveInput">User Objective / Goal</label>
+            <div class="input-with-button">
+              <input type="text" id="objectiveInput" class="input-text" value="Inspect active web page and check local network health" />
+              <button id="runBtn" class="btn btn-primary">
+                <span class="btn-icon">▶</span> Run Agent
+              </button>
+              <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <div class="presets-row">
+            <span class="presets-label">Preset Objectives:</span>
+            <button class="preset-chip" data-preset="Inspect active web page and check local network health">🔍 Page & Network Health</button>
+            <button class="preset-chip" data-preset="Click main CTA button and update user preferences in local storage">🖱️ DOM Click & Storage</button>
+            <button class="preset-chip" data-preset="Navigate to dashboard and check network service gateway status">🧭 Navigate & Check Gateway</button>
+          </div>
+        </div>
+
+        <!-- Execution Trace Steps -->
+        <div class="trace-container">
+          <div class="trace-header">
+            <h3>Execution Steps & Tool Invocation Trace</h3>
+            <span class="step-count" id="stepCountBadge">0 Steps</span>
+          </div>
+          <div class="timeline" id="timelineContainer">
+            <div class="empty-state" id="emptyTimelineState">
+              <div class="empty-icon">🚀</div>
+              <p>Click <strong>Run Agent</strong> to watch the PiAgent runner evaluate objectives, choose WebMCP tools, and execute actions live.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Simulated WebMCP Browser Sandbox & Event Logs -->
+      <section class="right-column">
+        <!-- Simulated Browser Sandbox -->
+        <div class="panel browser-panel">
+          <div class="panel-header">
+            <h2>🖥️ Live WebMCP Browser Sandbox</h2>
+            <span class="badge-subtle">Target Tab</span>
+          </div>
+
+          <div class="browser-window">
+            <!-- Location Bar -->
+            <div class="browser-bar">
+              <div class="browser-controls">
+                <span class="btn-dot close"></span>
+                <span class="btn-dot minimize"></span>
+                <span class="btn-dot expand"></span>
+              </div>
+              <div class="url-bar" id="browserUrlBar">https://app.webmcp.local/dashboard</div>
+              <button class="btn-sm" id="btnRefreshDOM">Refresh</button>
+            </div>
+
+            <!-- Browser DOM Content Box -->
+            <div class="browser-body">
+              <div class="page-card">
+                <div class="page-header-row">
+                  <h3 id="domPageTitle">WebMCP Dashboard & Diagnostics</h3>
+                  <span class="tag" id="domBadgeStatus">Active Session</span>
+                </div>
+                <p id="domPageText" class="dom-text-box">
+                  Welcome to WebMCP active page context. Click the primary button to submit local diagnostic logs to local network service gateway.
+                </p>
+                <div class="dom-actions">
+                  <button id="btnMockCta" class="cta-btn">Submit Diagnostic Data</button>
+                  <span id="clickCountLabel" class="click-counter">Clicked 0 times</span>
+                </div>
+              </div>
+
+              <!-- Storage & Network Grid -->
+              <div class="sandbox-subgrid">
+                <!-- LocalStorage Inspector -->
+                <div class="subcard">
+                  <div class="subcard-title">📦 LocalStorage Keys</div>
+                  <div class="storage-list" id="storageList">
+                    <div class="storage-row">
+                      <span class="key">user_theme</span>
+                      <span class="val">dark</span>
+                    </div>
+                    <div class="storage-row">
+                      <span class="key">session_id</span>
+                      <span class="val">wmcp_881a792</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Local Network Monitor -->
+                <div class="subcard">
+                  <div class="subcard-title">📡 Local Network Services</div>
+                  <div class="net-status-box" id="netStatusBox">
+                    <div class="net-row">
+                      <span>Gateway Service:</span>
+                      <span class="net-value online" id="netGatewayVal">Online (2ms)</span>
+                    </div>
+                    <div class="net-row">
+                      <span>Local Relay:</span>
+                      <span class="net-value online" id="netRelayVal">Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Protocol Event Log Stream -->
+        <div class="panel log-panel">
+          <div class="panel-header">
+            <h2>📜 WebMCP Protocol Event Stream</h2>
+            <button class="btn-sm" id="btnClearLogs">Clear Log</button>
+          </div>
+          <div class="log-stream" id="logStream">
+            <div class="log-entry info">[WebMCPServer] ℹ️ Registered 7 starter kit tools</div>
+            <div class="log-entry info">[WebMCPServer] ℹ️ WebMCP Server started over MessageChannel</div>
+            <div class="log-entry info">[WebMCPClient] ℹ️ WebMCP Client connected</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./src/ui.ts"></script>
+</body>
+</html>

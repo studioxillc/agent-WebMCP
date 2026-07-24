@@ -6,7 +6,7 @@ This folder contains closed and archived project documents, including completed 
 
 | ID / Document | Description | Archiving Date | Status |
 | :--- | :--- | :--- | :--- |
-| *No archived tasks yet. Completed docs from `docs/epics/` and `docs/bugfix/` will be moved here.* | | | |
+| [EPIC-002](./EPIC-002-web-ui-demo-playground.md) | Web UI Playground for WebMCP Demo App | 2026-07-24 | Completed |
 
 ## How to Archive a Document
 
