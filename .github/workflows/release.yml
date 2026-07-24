@@ -49,7 +49,14 @@ jobs:
         run: |
           if [ -n "$NPM_TOKEN" ]; then
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-            npm publish --access public
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+            npm publish --access public --verbose || {
+              echo "❌ npm publish failed."
+              echo "Common Causes:"
+              echo "1. Scope '@webmcp' is not created on npmjs.com (Create org at https://www.npmjs.com/org/create)."
+              echo "2. NPM_TOKEN secret lacks publish permissions or 2FA restriction."
+              exit 1
+            }
             echo "✅ Successfully published @webmcp/sdk to npmjs.com!"
           else
             echo "⚠️ NPM_TOKEN secret not set in GitHub repository. Skipping npm publish step."
