@@ -1,4 +1,4 @@
-import type { WebMCPToolDefinition } from '@studioxi/webmcp';
+import type { WebMCPToolDefinition } from '@zhenximi/webmcp';
 
 export const BROWSER_NAVIGATE_TOOL: WebMCPToolDefinition = {
   name: 'browser_navigate',

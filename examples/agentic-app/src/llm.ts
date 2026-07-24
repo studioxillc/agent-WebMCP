@@ -1,4 +1,4 @@
-import type { WebMCPToolDefinition } from '@studioxi/webmcp';
+import type { WebMCPToolDefinition } from '@zhenximi/webmcp';
 import type { AIModelConfig } from './config.ts';
 
 export interface LLMResponse {
