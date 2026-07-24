@@ -1,6 +1,8 @@
 import { createGoogleGenerativeAI, google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { streamText, type Message } from 'ai';
+import fs from 'fs';
+import path from 'path';
 import {
   createBackendAgentClient,
   createFrontendBridge,
@@ -9,7 +11,31 @@ import {
 
 export const runtime = 'nodejs';
 
+// Load workspace root .env if environment variables are missing
+function ensureEnvLoaded() {
+  if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY) {
+    const rootEnvPath = path.resolve(process.cwd(), '../../.env');
+    const localEnvPath = path.resolve(process.cwd(), '.env');
+    const envPath = fs.existsSync(localEnvPath) ? localEnvPath : rootEnvPath;
+
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, 'utf8');
+      for (const line of envContent.split('\n')) {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match) {
+          const key = match[1];
+          let value = match[2] || '';
+          if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
+          if (!process.env[key]) process.env[key] = value.trim();
+        }
+      }
+    }
+  }
+}
+
 export async function POST(req: Request) {
+  ensureEnvLoaded();
+
   const { messages }: { messages: Message[] } = await req.json();
 
   // Set up in-memory WebMCP transport bridge for API route session
@@ -26,16 +52,23 @@ export async function POST(req: Request) {
   const agentClient = createBackendAgentClient({ transport: backendTransport });
   await agentClient.connect();
 
-  // Convert WebMCP tools into Vercel AI SDK tools format
+  // Convert WebMCP tools into Vercel AI SDK tools format (without server execute so client executes browser tools)
   const tools = await agentClient.getVercelAITools();
+  for (const t of Object.keys(tools)) {
+    delete (tools[t] as any).execute;
+  }
 
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;
   const aiModel = process.env.AI_MODEL || 'gemini-1.5-flash';
 
+  console.log(`[Next.js API Chat] Gemini Key present: ${!!geminiKey}, OpenAI Key present: ${!!openaiKey}`);
+
   // 1. If Gemini API Key is configured
   if (geminiKey || process.env.AI_PROVIDER === 'gemini') {
     const googleProvider = geminiKey ? createGoogleGenerativeAI({ apiKey: geminiKey }) : google;
+    console.log(`[Next.js API Chat] Streaming response using Gemini Model: ${aiModel}`);
+
     const result = streamText({
       model: googleProvider(aiModel),
       messages,
@@ -47,6 +80,7 @@ export async function POST(req: Request) {
 
   // 2. If OpenAI API Key is configured
   if (openaiKey) {
+    console.log(`[Next.js API Chat] Streaming response using OpenAI gpt-4o-mini`);
     const result = streamText({
       model: openai('gpt-4o-mini'),
       messages,
@@ -57,6 +91,7 @@ export async function POST(req: Request) {
   }
 
   // 3. Fallback demo stream when no API keys are set
+  console.log(`[Next.js API Chat] Running demo fallback stream`);
   const lastUserMessage = messages[messages.length - 1]?.content || 'Hello';
   const encoder = new TextEncoder();
 
