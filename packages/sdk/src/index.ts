@@ -3,6 +3,7 @@ export * from './client/client';
 export * from './server/server';
 export * from './transports/websocket';
 export * from './transports/messagechannel';
+export * from './transports/http-standard';
 export * from './utils/logger';
 
 // High-level Frontend & Backend SDK Wrappers and Starter Kit Tools

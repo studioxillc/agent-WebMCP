@@ -1,9 +1,6 @@
 import { z } from 'zod';
-import type { WebMCPToolDefinition } from '../types/index';
+import type { WebMCPToolDefinition } from '@thestudioxi/webmcp';
 
-/**
- * Converts JSON Schema property type definitions into Zod schemas.
- */
 export function jsonSchemaPropertyToZod(propSchema: Record<string, any> = {}): z.ZodTypeAny {
   let zodType: z.ZodTypeAny;
 
@@ -48,9 +45,6 @@ export function jsonSchemaPropertyToZod(propSchema: Record<string, any> = {}): z
   return zodType;
 }
 
-/**
- * Converts a JSON Schema object specification into a Zod object schema.
- */
 export function jsonSchemaObjectToZod(
   inputSchema: WebMCPToolDefinition['inputSchema']
 ): z.ZodObject<any> {
@@ -78,11 +72,7 @@ export interface VercelAITool {
 export type WebMCPToolExecutor = (name: string, args: Record<string, any>) => Promise<any>;
 
 /**
- * Converts a list of WebMCP tool definitions into a dictionary of Vercel AI SDK compatible tool definitions.
- *
- * @param tools List of WebMCPToolDefinition objects.
- * @param execute Optional function to call WebMCP tool execution on server. If omitted, tools can be executed client-side.
- * @returns Map of tool name -> Vercel AI SDK tool definition object.
+ * Converts WebMCP tool definitions into Vercel AI SDK tool definitions.
  */
 export function webmcpToVercelAITools(
   tools: WebMCPToolDefinition[],

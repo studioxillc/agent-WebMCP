@@ -1,8 +1,5 @@
 import { WebMCPClient } from '../client/client';
 import type { WebMCPClientOptions, WebMCPToolDefinition } from '../types/index';
-import { webmcpToVercelAITools, type VercelAITool } from './vercel-ai';
-
-export * from './vercel-ai';
 
 export class WebMCPAgentClient {
   private client: WebMCPClient;
@@ -25,11 +22,6 @@ export class WebMCPAgentClient {
 
   async executeTool(name: string, args: Record<string, any> = {}): Promise<any> {
     return this.client.callTool(name, args);
-  }
-
-  async getVercelAITools(): Promise<Record<string, VercelAITool>> {
-    const tools = await this.getAvailableTools();
-    return webmcpToVercelAITools(tools, (name, args) => this.executeTool(name, args));
   }
 
   getRawClient(): WebMCPClient {

@@ -8,6 +8,7 @@ import {
   createFrontendBridge,
   MessageChannelTransport,
 } from '@thestudioxi/webmcp';
+import { webmcpToVercelAITools } from '@webmcp/adapter-vercel-ai';
 
 export const runtime = 'nodejs';
 
@@ -52,8 +53,9 @@ export async function POST(req: Request) {
   const agentClient = createBackendAgentClient({ transport: backendTransport });
   await agentClient.connect();
 
-  // Convert WebMCP tools into Vercel AI SDK tools format with WebMCP execution handler
-  const tools = await agentClient.getVercelAITools();
+  // Convert WebMCP tools into Vercel AI SDK tools format using @webmcp/adapter-vercel-ai
+  const rawTools = await agentClient.getAvailableTools();
+  const tools = webmcpToVercelAITools(rawTools, (name, args) => agentClient.executeTool(name, args));
 
   const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   const openaiKey = process.env.OPENAI_API_KEY;

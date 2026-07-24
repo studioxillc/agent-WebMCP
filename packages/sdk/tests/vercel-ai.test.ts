@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { webmcpToVercelAITools, jsonSchemaObjectToZod } from '../src/backend/vercel-ai.ts';
+import { webmcpToVercelAITools, jsonSchemaObjectToZod } from '../../adapters/vercel-ai/src/index.ts';
 import type { WebMCPToolDefinition } from '../src/types/index.ts';
 
 describe('Vercel AI SDK Adapter', () => {
