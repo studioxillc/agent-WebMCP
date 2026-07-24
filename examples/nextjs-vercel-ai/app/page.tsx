@@ -1,13 +1,11 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createFrontendBridge, MessageChannelTransport } from '@thestudioxi/webmcp';
 
 export default function WebMCPAgentPage() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/chat',
-  });
-
+  const bridgeRef = useRef<any>(null);
   const [activeTools] = useState([
     { name: 'dom_get_text', category: 'DOM Inspector' },
     { name: 'dom_click_element', category: 'DOM Action' },
@@ -16,6 +14,34 @@ export default function WebMCPAgentPage() {
     { name: 'storage_get_item', category: 'Storage' },
     { name: 'storage_set_item', category: 'Storage' },
   ]);
+
+  // Initialize WebMCP Frontend Bridge in the real browser window
+  useEffect(() => {
+    const channel = new MessageChannel();
+    const transport = new MessageChannelTransport(channel.port1);
+    const bridge = createFrontendBridge({
+      transport,
+      autoRegisterStarterKit: true,
+    });
+    bridge.start();
+    bridgeRef.current = bridge;
+
+    return () => {
+      bridge.stop();
+    };
+  }, []);
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
+    api: '/api/chat',
+    async onToolCall({ toolCall }) {
+      if (bridgeRef.current) {
+        console.log(`[WebMCP Browser Execution] Executing tool '${toolCall.toolName}' with args:`, toolCall.args);
+        const result = await bridgeRef.current.executeTool(toolCall.toolName, toolCall.args);
+        console.log(`[WebMCP Browser Result]`, result);
+        return result;
+      }
+    },
+  });
 
   return (
     <div className="container">
@@ -27,7 +53,7 @@ export default function WebMCPAgentPage() {
         </div>
         <div className="status-badge">
           <span className="status-dot"></span>
-          WebMCP Bridge Active
+          WebMCP Client Bridge Active
         </div>
       </header>
 
@@ -42,8 +68,29 @@ export default function WebMCPAgentPage() {
                   ⚡ WebMCP Browser Agent Ready
                 </p>
                 <p style={{ fontSize: '0.9rem' }}>
-                  Ask the Vercel AI SDK agent to inspect DOM elements, navigate pages, or manage local browser storage.
+                  Ask the Vercel AI SDK agent to inspect DOM elements, navigate pages, or set local storage!
                 </p>
+                <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                  <button
+                    className="send-btn"
+                    style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
+                    onClick={() => {
+                      const fakeEvent = { preventDefault: () => {} } as any;
+                      handleInputChange({ target: { value: "Set local storage key 'user_theme' to 'dark'" } } as any);
+                    }}
+                  >
+                    Try: Set localStorage
+                  </button>
+                  <button
+                    className="send-btn"
+                    style={{ fontSize: '0.8rem', padding: '0.4rem 0.8rem' }}
+                    onClick={() => {
+                      handleInputChange({ target: { value: "Get local storage value for key 'user_theme'" } } as any);
+                    }}
+                  >
+                    Try: Read localStorage
+                  </button>
+                </div>
               </div>
             ) : (
               messages.map((m) => (
@@ -55,14 +102,14 @@ export default function WebMCPAgentPage() {
                 >
                   <p style={{ whiteSpace: 'pre-wrap' }}>{m.content}</p>
 
-                  {/* Render Tool Calls if present */}
+                  {/* Render Tool Invocations if present */}
                   {m.toolInvocations?.map((toolInvocation) => (
                     <div key={toolInvocation.toolCallId} className="tool-invocation">
                       ⚙️ Tool Execution: <strong>{toolInvocation.toolName}</strong>
                       <div>Args: {JSON.stringify(toolInvocation.args)}</div>
                       {'result' in toolInvocation && (
-                        <div style={{ color: 'var(--success)' }}>
-                          Result: {JSON.stringify(toolInvocation.result)}
+                        <div style={{ color: 'var(--success)', marginTop: '0.25rem' }}>
+                          ✅ Result: {JSON.stringify(toolInvocation.result)}
                         </div>
                       )}
                     </div>
@@ -78,7 +125,7 @@ export default function WebMCPAgentPage() {
               className="chat-input"
               value={input}
               onChange={handleInputChange}
-              placeholder="Ask agent to inspect DOM or run browser tools..."
+              placeholder="Ask agent to set local storage, inspect DOM, etc..."
             />
             <button type="submit" className="send-btn" disabled={isLoading}>
               {isLoading ? 'Processing...' : 'Send'}
@@ -113,8 +160,7 @@ export default function WebMCPAgentPage() {
               lineHeight: 1.5,
             }}
           >
-            💡 <strong>Integration Note:</strong> This app uses{' '}
-            <code style={{ color: 'var(--secondary-accent)' }}>webmcpToVercelAITools()</code> to map WebMCP Model Context Protocol tools directly into Next.js App Router Vercel AI SDK <code style={{ color: 'var(--secondary-accent)' }}>streamText</code>.
+            💡 <strong>Live Browser Storage:</strong> Browser tool executions run directly inside your active browser tab. Check Chrome DevTools Application -&gt; Local Storage to verify!
           </div>
         </aside>
       </main>

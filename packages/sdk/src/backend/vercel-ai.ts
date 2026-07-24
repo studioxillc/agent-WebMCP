@@ -72,7 +72,7 @@ export function jsonSchemaObjectToZod(
 export interface VercelAITool {
   description: string;
   parameters: z.ZodObject<any>;
-  execute: (args: any) => Promise<any>;
+  execute?: (args: any) => Promise<any>;
 }
 
 export type WebMCPToolExecutor = (name: string, args: Record<string, any>) => Promise<any>;
@@ -81,12 +81,12 @@ export type WebMCPToolExecutor = (name: string, args: Record<string, any>) => Pr
  * Converts a list of WebMCP tool definitions into a dictionary of Vercel AI SDK compatible tool definitions.
  *
  * @param tools List of WebMCPToolDefinition objects.
- * @param execute Function to call WebMCP tool execution.
+ * @param execute Optional function to call WebMCP tool execution on server. If omitted, tools can be executed client-side.
  * @returns Map of tool name -> Vercel AI SDK tool definition object.
  */
 export function webmcpToVercelAITools(
   tools: WebMCPToolDefinition[],
-  execute: WebMCPToolExecutor
+  execute?: WebMCPToolExecutor
 ): Record<string, VercelAITool> {
   const vercelTools: Record<string, VercelAITool> = {};
 
@@ -96,7 +96,7 @@ export function webmcpToVercelAITools(
     vercelTools[toolDef.name] = {
       description: toolDef.description || '',
       parameters,
-      execute: async (args: any) => execute(toolDef.name, args || {}),
+      ...(execute ? { execute: async (args: any) => execute(toolDef.name, args || {}) } : {}),
     };
   }
 

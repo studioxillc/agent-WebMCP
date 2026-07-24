@@ -57,7 +57,9 @@ describe('Vercel AI SDK Adapter', () => {
     expect(vercelTools.web_navigate.description).toBe('Navigate browser active tab');
     expect(vercelTools.web_navigate.parameters).toBeDefined();
 
-    const result = await vercelTools.web_navigate.execute({ url: 'https://webmcp.org' });
+    expect(vercelTools.web_navigate.execute).toBeDefined();
+
+    const result = await vercelTools.web_navigate.execute!({ url: 'https://webmcp.org' });
     expect(calledTool).toBe('web_navigate');
     expect(calledArgs.url).toBe('https://webmcp.org');
     expect(result.success).toBe(true);
