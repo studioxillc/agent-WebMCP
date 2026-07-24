@@ -1,4 +1,4 @@
-import type { WebMCPClient } from '@webmcp/sdk';
+import type { WebMCPClient } from '@studioxi/webmcp';
 import { type AIModelConfig } from './config.ts';
 import { LLMClient } from './llm.ts';
 

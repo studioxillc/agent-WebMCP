@@ -14,7 +14,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "composite": true
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@studioxi/webmcp": ["packages/sdk/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "dist", "graphify-out"]
 }

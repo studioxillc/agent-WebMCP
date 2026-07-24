@@ -1,4 +1,4 @@
-import { createBackendAgentClient, createFrontendBridge, MessageChannelTransport } from '@webmcp/sdk';
+import { createBackendAgentClient, createFrontendBridge, MessageChannelTransport } from '@studioxi/webmcp';
 import { PiAgentRunner } from './agent.ts';
 import type { AIModelConfig } from './config.ts';
 import { LOCAL_NETWORK_PING_TOOL } from './tools.ts';
