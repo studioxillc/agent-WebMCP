@@ -5,6 +5,7 @@
     "moduleResolution": "bundler",
     "types": ["bun"],
     "lib": ["ESNext", "DOM"],
+    "jsx": "react-jsx",
     "strict": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,

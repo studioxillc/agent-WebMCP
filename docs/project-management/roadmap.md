@@ -4,7 +4,8 @@
 - Monorepo structure with Bun & TypeScript workspaces.
 - `@webmcp/sdk` client, server, WebSocket & MessageChannel transports.
 - AI Native setup: `AGENTS.md`, `CLAUDE.md`, Graphify scripts, skills.
-- Example agent application showing WebMCP browser control.
+- Example agent application showing WebMCP browser control (`examples/agentic-app`).
+- Next.js & Vercel AI SDK integration example app (`examples/nextjs-vercel-ai`).
 
 ## Phase 2: Web Extensions & WebRTC Transports
 - Chrome Manifest V3 WebMCP extension bridge.
