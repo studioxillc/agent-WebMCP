@@ -18,7 +18,10 @@
     "example:next": "bun run --cwd examples/nextjs-vercel-ai dev",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "publish-packages": "bun run build && changeset publish"
+    "publish-packages": "bun run build && changeset publish",
+    "docs:dev": "cd docs-site && bun run dev",
+    "docs:build": "cd docs-site && bun run build",
+    "docs:preview": "cd docs-site && bun run preview"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",

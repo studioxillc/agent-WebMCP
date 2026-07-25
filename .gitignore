@@ -7,6 +7,8 @@ dist/
 build/
 .next/
 *.tsbuildinfo
+docs-site/.vitepress/dist/
+docs-site/.vitepress/cache/
 
 # Graphify knowledge graph outputs
 graphify-out/
