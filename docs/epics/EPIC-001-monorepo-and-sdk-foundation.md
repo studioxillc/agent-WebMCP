@@ -15,6 +15,6 @@ Set up the open-source Bun monorepo, AI agent guidelines, Graphify integration, 
 - [x] Create workspace skills (`webmcp-development`, `graphify-codebase`, `doc-workflow`).
 - [x] Create `docs/` workspace taxonomy and `docs/archive/` closed folder.
 - [x] Implement core `@webmcp/sdk` client, server, and transports.
-- [x Implement sample agentic app in `examples/agentic-app`.
+- [x] Implement sample agentic app in `examples/agentic-app`.
 - [x] Verify build, typechecks, and tests with `bun test`.
 - [x] Archive completed task doc into `docs/archive/`.
