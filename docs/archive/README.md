@@ -6,6 +6,7 @@ This folder contains closed and archived project documents, including completed 
 
 | ID / Document | Description | Archiving Date | Status |
 | :--- | :--- | :--- | :--- |
+| [EPIC-001](./EPIC-001-monorepo-and-sdk-foundation.md) | Monorepo Foundation & Core WebMCP SDK | 2026-07-25 | Completed |
 | [EPIC-002](./EPIC-002-web-ui-demo-playground.md) | Web UI Playground for WebMCP Demo App | 2026-07-24 | Completed |
 | [EPIC-003](./EPIC-003-npm-release-pipeline.md) | NPM Release Pipeline & Package Publishing Setup | 2026-07-24 | Completed |
 | [EPIC-004](./EPIC-004-vercel-ai-sdk-nextjs-example.md) | Vercel AI SDK Next.js Example & Integration | 2026-07-24 | Completed |
