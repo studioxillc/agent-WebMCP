@@ -1,6 +1,6 @@
 {
   "name": "@thestudioxi/webmcp-adapter-nest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NestJS / Server-side Adapter for WebMCP",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
