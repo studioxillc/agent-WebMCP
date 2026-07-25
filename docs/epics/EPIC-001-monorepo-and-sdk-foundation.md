@@ -1,6 +1,6 @@
 # EPIC-001: Monorepo Foundation & Core WebMCP SDK
 
-- **Status**: In Progress
+- **Status**: Completed
 - **Target Completion**: Phase 1
 
 ## Objective
@@ -14,7 +14,7 @@ Set up the open-source Bun monorepo, AI agent guidelines, Graphify integration, 
 - [x] Integrate Graphify helper scripts (`scripts/graphify.sh`).
 - [x] Create workspace skills (`webmcp-development`, `graphify-codebase`, `doc-workflow`).
 - [x] Create `docs/` workspace taxonomy and `docs/archive/` closed folder.
-- [ ] Implement core `@webmcp/sdk` client, server, and transports.
-- [ ] Implement sample agentic app in `examples/agentic-app`.
-- [ ] Verify build, typechecks, and tests with `bun test`.
-- [ ] Archive completed task doc into `docs/archive/`.
+- [x] Implement core `@webmcp/sdk` client, server, and transports.
+- [x Implement sample agentic app in `examples/agentic-app`.
+- [x] Verify build, typechecks, and tests with `bun test`.
+- [x] Archive completed task doc into `docs/archive/`.
