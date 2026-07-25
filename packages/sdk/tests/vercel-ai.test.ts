@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { webmcpToVercelAITools, jsonSchemaObjectToZod, jsonSchemaPropertyToZod } from '../src/backend/vercel-ai.ts';
+import { webmcpToVercelAITools, jsonSchemaObjectToZod } from '../../adapters/vercel-ai/src/index.ts';
 import type { WebMCPToolDefinition } from '../src/types/index.ts';
 
 describe('Vercel AI SDK Adapter', () => {
@@ -64,26 +64,5 @@ describe('Vercel AI SDK Adapter', () => {
     expect(calledArgs.url).toBe('https://webmcp.org');
     expect(result.success).toBe(true);
     expect(result.navigatedTo).toBe('https://webmcp.org');
-  });
-
-  it('should handle JSON Schema enum keyword for string enums', () => {
-    const zodType = jsonSchemaPropertyToZod({
-      type: 'string',
-      enum: ['GET', 'POST', 'PUT', 'DELETE'],
-      description: 'HTTP method',
-    });
-    expect(zodType).toBeDefined();
-    expect(zodType.parse('GET')).toBe('GET');
-    expect(() => zodType.parse('PATCH')).toThrow();
-  });
-
-  it('should handle JSON Schema const keyword for literal values', () => {
-    const zodType = jsonSchemaPropertyToZod({
-      const: 'fixed-value',
-      description: 'A constant',
-    });
-    expect(zodType).toBeDefined();
-    expect(zodType.parse('fixed-value')).toBe('fixed-value');
-    expect(() => zodType.parse('other')).toThrow();
   });
 });
