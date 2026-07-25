@@ -1,11 +1,12 @@
 # agent-WebMCP 🚀
 
 [![CI](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/@thestudioxi/webmcp.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **Open-source TypeScript SDK and AI-Native Toolset for WebMCP**  
 *Empowering Web AI Agents to seamlessly interact with local browser content, web extensions, and local network resources.*
+
+📖 **[Documentation](https://zhenximi.github.io/agent-WebMCP/)**
 
 ---
 
@@ -15,42 +16,20 @@
 
 With WebMCP, AI agents can:
 - 🌐 Inspect and manipulate active browser tab DOMs in real time without heavy headless browsers.
-- ⚡ Register and call web tools via bi-directional transports (WebSocket, MessageChannel, WebRTC).
+- ⚡ Register and call web tools via bi-directional transports (WebSocket, MessageChannel, HTTP).
 - 🔗 Connect agent loops to local network services safely and modularly.
 
 ---
 
-## 🏗️ Repository Architecture
+## 📦 Packages
 
-This project is organized as an **AI-Native Bun Monorepo**:
-
-```
-agent-WebMCP/
-├── AGENTS.md                   # Core AI Agent operating guidelines & rules
-├── CLAUDE.md                   # Developer & Agent quick reference manual
-├── package.json                # Bun workspace root configuration
-├── tsconfig.json               # Root TypeScript configuration
-├── scripts/
-│   └── graphify.sh             # AST knowledge graph generator for AI agents
-├── skills/                     # Co-located AI Agent skills
-│   ├── webmcp-development/     # Skill for building WebMCP tools & transports
-│   ├── graphify-codebase/      # Skill for querying codebase graph reports
-│   └── doc-workflow/           # Skill for managing PRDs, Epics, & archiving
-├── docs/                       # Project documentation taxonomy
-│   ├── architecture/           # ADR-001 WebMCP Protocol Architecture
-│   ├── prd/                    # PRD-001 SDK Specification
-│   ├── epics/                  # Active development epics & task lists
-│   ├── bugfix/                 # Bugfix plans & post-mortems
-│   ├── project-management/     # Project roadmap and milestone tracking
-│   └── archive/                # CLOSED FOLDER: Archived completed tasks & docs
-├── packages/
-│   └── sdk/                    # Core @webmcp/sdk TypeScript package
-│       ├── src/client/         # WebMCPClient interface
-│       ├── src/server/         # WebMCPServer bridge & tool dispatcher
-│       └── src/transports/     # WebSocket & MessageChannel transports
-└── examples/
-    └── agentic-app/            # Sample Agentic App (Pi Agent / DeepAgent pattern)
-```
+| Package | Version | Description |
+|---|---|---|
+| [`@thestudioxi/webmcp`](./packages/sdk) | [![npm](https://img.shields.io/npm/v/@thestudioxi/webmcp.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp) | Core SDK — Client, Server, Transports |
+| [`@thestudioxi/webmcp-adapter-express`](./packages/adapters/express) | [![npm](https://img.shields.io/npm/v/@thestudioxi/webmcp-adapter-express.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp-adapter-express) | Express.js middleware adapter |
+| [`@thestudioxi/webmcp-adapter-hono`](./packages/adapters/hono) | [![npm](https://img.shields.io/npm/v/@thestudioxi/webmcp-adapter-hono.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp-adapter-hono) | Hono framework route handler |
+| [`@thestudioxi/webmcp-adapter-nest`](./packages/adapters/nest) | [![npm](https://img.shields.io/npm/v/@thestudioxi/webmcp-adapter-nest.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp-adapter-nest) | NestJS server adapter |
+| [`@thestudioxi/webmcp-adapter-vercel-ai`](./packages/adapters/vercel-ai) | [![npm](https://img.shields.io/npm/v/@thestudioxi/webmcp-adapter-vercel-ai.svg)](https://www.npmjs.com/package/@thestudioxi/webmcp-adapter-vercel-ai) | Vercel AI SDK tool converter |
 
 ---
 
@@ -60,6 +39,160 @@ agent-WebMCP/
 - [Bun](https://bun.sh) (v1.0.0 or higher)
 
 ### Installation
+
+```bash
+# Install the core SDK
+bun add @thestudioxi/webmcp
+
+# Install an adapter for your framework
+bun add @thestudioxi/webmcp-adapter-express   # Express.js
+bun add @thestudioxi/webmcp-adapter-hono      # Hono
+bun add @thestudioxi/webmcp-adapter-nest      # NestJS
+bun add @thestudioxi/webmcp-adapter-vercel-ai # Vercel AI SDK
+```
+
+---
+
+## 🔌 Framework Adapters
+
+WebMCP provides zero-dependency adapters that bridge the core SDK to popular web frameworks via the `WebStandardHttpTransport`.
+
+### Express.js
+
+```ts
+import express from 'express';
+import { WebMCPServer, WebStandardHttpTransport } from '@thestudioxi/webmcp';
+import { createExpressWebMCPMiddleware } from '@thestudioxi/webmcp-adapter-express';
+
+const transport = new WebStandardHttpTransport();
+const server = new WebMCPServer({ transport });
+
+server.registerTool(
+  { name: 'hello', description: 'Say hello', inputSchema: { type: 'object', properties: { name: { type: 'string' } } } },
+  async (args) => ({ message: `Hello, ${args.name}!` })
+);
+
+await server.start();
+
+const app = express();
+app.use(express.json());
+app.use('/api/webmcp', createExpressWebMCPMiddleware(transport));
+app.listen(3000);
+```
+
+### Hono
+
+```ts
+import { Hono } from 'hono';
+import { WebMCPServer, WebStandardHttpTransport } from '@thestudioxi/webmcp';
+import { createHonoWebMCPHandler } from '@thestudioxi/webmcp-adapter-hono';
+
+const transport = new WebStandardHttpTransport();
+const server = new WebMCPServer({ transport });
+// ... register tools ...
+await server.start();
+
+const app = new Hono();
+app.post('/api/webmcp', createHonoWebMCPHandler(transport));
+
+export default app;
+```
+
+### NestJS
+
+```ts
+import { Controller, Post, Req } from '@nestjs/common';
+import { WebMCPAdapter } from '@thestudioxi/webmcp-adapter-nest';
+
+@Controller('api/webmcp')
+export class WebMCPController {
+  private adapter = new WebMCPAdapter();
+
+  async onModuleInit() {
+    this.adapter.registerTool(myToolDef, myToolHandler);
+    await this.adapter.start();
+  }
+
+  @Post()
+  async handle(@Req() req: Request) {
+    return this.adapter.handleRequest(req);
+  }
+}
+```
+
+### Vercel AI SDK
+
+```ts
+import { streamText } from 'ai';
+import { createBackendAgentClient } from '@thestudioxi/webmcp';
+import { webmcpToVercelAITools } from '@thestudioxi/webmcp-adapter-vercel-ai';
+
+const agentClient = createBackendAgentClient({ transport: myTransport });
+await agentClient.connect();
+
+const rawTools = await agentClient.getAvailableTools();
+const tools = webmcpToVercelAITools(rawTools, (name, args) => agentClient.executeTool(name, args));
+
+const result = streamText({
+  model: myModel,
+  messages,
+  tools,
+});
+```
+
+---
+
+## 🏗️ Repository Architecture
+
+This project is organized as an **AI-Native Bun Monorepo**:
+
+```
+agent-WebMCP/
+├── packages/
+│   ├── sdk/                        # Core @thestudioxi/webmcp package
+│   │   ├── src/client/             # WebMCPClient — agent-side tool consumer
+│   │   ├── src/server/             # WebMCPServer — tool host & JSON-RPC dispatcher
+│   │   ├── src/transports/         # WebSocket, MessageChannel, HTTP transports
+│   │   ├── src/frontend/           # WebMCPBrowserBridge (browser-side SDK)
+│   │   ├── src/backend/            # WebMCPAgentClient (server-side SDK)
+│   │   └── src/tools/starter-kit/  # Pre-built browser interaction tools
+│   └── adapters/
+│       ├── express/                # Express.js middleware adapter
+│       ├── hono/                   # Hono route handler adapter
+│       ├── nest/                   # NestJS server adapter
+│       └── vercel-ai/              # Vercel AI SDK tool converter
+├── examples/
+│   ├── agentic-app/                # Sample Agentic App (Pi Agent pattern)
+│   └── nextjs-vercel-ai/           # Next.js + Vercel AI SDK example
+├── docs-site/                      # VitePress documentation site
+├── docs/                           # Internal project docs (ADRs, PRDs, Epics)
+├── scripts/                        # Build & utility scripts
+└── skills/                         # Co-located AI Agent skills
+```
+
+---
+
+## 🤖 Running Examples
+
+### Agentic App (In-Memory Bridge)
+```bash
+bun run example:agent
+```
+
+### Next.js + Vercel AI SDK
+```bash
+bun run example:next
+```
+
+### Web Demo (Browser Bridge)
+```bash
+bun run example:web
+```
+
+---
+
+## 🧪 Development
+
 ```bash
 # Clone the repository
 git clone https://github.com/zhenximi/agent-WebMCP.git
@@ -67,34 +200,16 @@ cd agent-WebMCP
 
 # Install workspace dependencies
 bun install
-```
 
-### Running Tests
-```bash
+# Run tests
 bun test
-```
 
-### Building the Core SDK
-```bash
+# TypeScript type checking
+bun run check
+
+# Build all packages
 bun run build
 ```
-
-### Typechecking
-```bash
-bun run check
-```
-
----
-
-## 🤖 Running the Example Agentic App
-
-Run the sample agent runner powered by `@webmcp/sdk`:
-
-```bash
-bun run example:agent
-```
-
-This starts an in-memory WebMCP bridge server, registers sample browser and local network tools, connects the client, and executes an autonomous agent step loop.
 
 ---
 
