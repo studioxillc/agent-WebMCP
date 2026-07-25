@@ -6,7 +6,7 @@ export default defineConfig({
   base: '/agent-WebMCP/',
 
   head: [
-    ['meta', { name: 'theme-color', content: '#6d5ce7' }],
+    ['meta', { name: 'theme-color', content: '#10b981' }],
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:title', content: 'WebMCP — Web AI Agent SDK' }],
     ['meta', { name: 'og:description', content: 'Empowering Web AI Agents to seamlessly interact with browser content and local network resources.' }],
