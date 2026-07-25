@@ -4,14 +4,45 @@ import {
   WebMCPServer,
   type WebMCPToolDefinition,
   type WebMCPToolHandler,
+  type WebStandardHttpTransportOptions,
 } from '@thestudioxi/webmcp';
 
-export class WebMCPNestAdapter {
+/**
+ * Self-contained WebMCP adapter for NestJS and similar server-side frameworks.
+ *
+ * This class bundles a WebMCPServer + WebStandardHttpTransport and exposes
+ * a `handleRequest(Request): Promise<Response>` method that can be called
+ * from a NestJS Controller, Guard, or raw HTTP handler.
+ *
+ * Note: This is a plain adapter class, not a NestJS @Module or @Injectable.
+ * Integrate it into your NestJS application by injecting it as a custom provider
+ * and calling `handleRequest` from your controller.
+ *
+ * @example
+ * ```typescript
+ * // In your NestJS controller:
+ * @Controller('api/webmcp')
+ * export class WebMCPController {
+ *   private adapter = new WebMCPAdapter();
+ *
+ *   async onModuleInit() {
+ *     this.adapter.registerTool(myToolDef, myToolHandler);
+ *     await this.adapter.start();
+ *   }
+ *
+ *   @Post()
+ *   async handle(@Req() req: Request) {
+ *     return this.adapter.handleRequest(req);
+ *   }
+ * }
+ * ```
+ */
+export class WebMCPAdapter {
   private server: WebMCPServer;
   private transport: WebStandardHttpTransport;
 
-  constructor() {
-    this.transport = new WebStandardHttpTransport();
+  constructor(options?: WebStandardHttpTransportOptions) {
+    this.transport = new WebStandardHttpTransport(options);
     this.server = new WebMCPServer({ transport: this.transport });
   }
 
@@ -33,3 +64,8 @@ export class WebMCPNestAdapter {
     return this.transport.handleRequest(request);
   }
 }
+
+/**
+ * @deprecated Use WebMCPAdapter instead. WebMCPNestAdapter was misleadingly named.
+ */
+export const WebMCPNestAdapter = WebMCPAdapter;

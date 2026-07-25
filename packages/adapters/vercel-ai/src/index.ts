@@ -1,8 +1,35 @@
 import { z } from 'zod';
 import type { WebMCPToolDefinition } from '@thestudioxi/webmcp';
 
+/**
+ * Converts JSON Schema property type definitions into Zod schemas.
+ */
 export function jsonSchemaPropertyToZod(propSchema: Record<string, any> = {}): z.ZodTypeAny {
   let zodType: z.ZodTypeAny;
+
+  // Handle JSON Schema `const` keyword (fixed literal value)
+  if (propSchema.const !== undefined) {
+    zodType = z.literal(propSchema.const);
+    if (propSchema.description && typeof propSchema.description === 'string') {
+      zodType = zodType.describe(propSchema.description);
+    }
+    return zodType;
+  }
+
+  // Handle JSON Schema `enum` keyword (restricted set of values)
+  if (Array.isArray(propSchema.enum) && propSchema.enum.length > 0) {
+    const enumValues = propSchema.enum;
+    if (enumValues.every((v: unknown) => typeof v === 'string')) {
+      zodType = z.enum(enumValues as [string, ...string[]]);
+    } else {
+      const literals = enumValues.map((v: z.Primitive) => z.literal(v));
+      zodType = z.union([literals[0], literals[1] ?? literals[0], ...literals.slice(2)]);
+    }
+    if (propSchema.description && typeof propSchema.description === 'string') {
+      zodType = zodType.describe(propSchema.description);
+    }
+    return zodType;
+  }
 
   switch (propSchema.type) {
     case 'string':
@@ -45,6 +72,9 @@ export function jsonSchemaPropertyToZod(propSchema: Record<string, any> = {}): z
   return zodType;
 }
 
+/**
+ * Converts a JSON Schema object specification into a Zod object schema.
+ */
 export function jsonSchemaObjectToZod(
   inputSchema: WebMCPToolDefinition['inputSchema']
 ): z.ZodObject<any> {

@@ -45,6 +45,15 @@ jobs:
       - name: Build Packages
         run: bun run build
 
+      - name: Validate NPM_TOKEN
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "::error::NPM_TOKEN secret is not configured. Publishing will fail."
+            echo "::error::Add NPM_TOKEN to repository secrets: Settings > Secrets > Actions > New repository secret"
+            exit 1
+          fi
+          echo "✓ NPM_TOKEN is configured"
+
       - name: Create Release PR or Publish to NPM
         id: changesets
         uses: changesets/action@v1
