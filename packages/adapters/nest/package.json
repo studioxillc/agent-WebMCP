@@ -23,6 +23,11 @@
   "peerDependencies": {
     "@nestjs/common": "^9.0.0 || ^10.0.0"
   },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    }
+  },
   "author": "zhenximi",
   "license": "MIT"
 }

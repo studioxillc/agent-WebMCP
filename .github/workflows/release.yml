@@ -46,8 +46,10 @@ jobs:
         run: bun run build
 
       - name: Validate NPM_TOKEN
+        env:
+          NPM_TOKEN_SET: ${{ secrets.NPM_TOKEN != '' }}
         run: |
-          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+          if [ "$NPM_TOKEN_SET" != "true" ]; then
             echo "::error::NPM_TOKEN secret is not configured. Publishing will fail."
             echo "::error::Add NPM_TOKEN to repository secrets: Settings > Secrets > Actions > New repository secret"
             exit 1
