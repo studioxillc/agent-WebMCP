@@ -1,7 +1,7 @@
 import { createGoogleGenerativeAI, google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { streamText, type Message } from 'ai';
-import fs from 'fs';
+import { config as dotenvConfig } from 'dotenv';
 import path from 'path';
 import {
   createBackendAgentClient,
@@ -12,25 +12,12 @@ import { webmcpToVercelAITools } from '@webmcp/adapter-vercel-ai';
 
 export const runtime = 'nodejs';
 
-// Load workspace root .env if environment variables are missing
+// Load .env from the example directory or workspace root (for monorepo setups)
 function ensureEnvLoaded() {
   if (!process.env.GEMINI_API_KEY && !process.env.OPENAI_API_KEY) {
-    const rootEnvPath = path.resolve(process.cwd(), '../../.env');
-    const localEnvPath = path.resolve(process.cwd(), '.env');
-    const envPath = fs.existsSync(localEnvPath) ? localEnvPath : rootEnvPath;
-
-    if (fs.existsSync(envPath)) {
-      const envContent = fs.readFileSync(envPath, 'utf8');
-      for (const line of envContent.split('\n')) {
-        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-        if (match) {
-          const key = match[1];
-          let value = match[2] || '';
-          if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
-          if (!process.env[key]) process.env[key] = value.trim();
-        }
-      }
-    }
+    // Try local .env first, then monorepo root .env
+    dotenvConfig({ path: path.resolve(process.cwd(), '.env') });
+    dotenvConfig({ path: path.resolve(process.cwd(), '../../.env') });
   }
 }
 

@@ -1,6 +1,28 @@
 import { createWebMCPHttpHandler, type WebStandardHttpTransport } from '@thestudioxi/webmcp';
 
 /**
+ * Minimal Express-compatible types.
+ * Using inline interfaces to avoid requiring express as a hard dependency.
+ */
+interface ExpressRequest {
+  method: string;
+  protocol?: string;
+  originalUrl?: string;
+  url?: string;
+  headers: Record<string, string | string[] | undefined>;
+  body?: unknown;
+  get(name: string): string | undefined;
+}
+
+interface ExpressResponse {
+  status(code: number): ExpressResponse;
+  setHeader(name: string, value: string): void;
+  send(body: string): void;
+}
+
+type ExpressNextFunction = (err?: unknown) => void;
+
+/**
  * Creates an Express.js middleware function for WebMCP endpoints.
  *
  * Usage:
@@ -9,7 +31,7 @@ import { createWebMCPHttpHandler, type WebStandardHttpTransport } from '@thestud
 export function createExpressWebMCPMiddleware(transport: WebStandardHttpTransport) {
   const httpHandler = createWebMCPHttpHandler(transport);
 
-  return async (req: any, res: any, next: any) => {
+  return async (req: ExpressRequest, res: ExpressResponse, next: ExpressNextFunction) => {
     try {
       const url = `${req.protocol || 'http'}://${req.get('host') || 'localhost'}${req.originalUrl || req.url}`;
 
@@ -22,7 +44,7 @@ export function createExpressWebMCPMiddleware(transport: WebStandardHttpTranspor
 
       const webRequest = new Request(url, {
         method: req.method,
-        headers: req.headers as any,
+        headers: req.headers as HeadersInit,
         body: ['POST', 'PUT', 'PATCH'].includes(req.method) ? bodyText : undefined,
       });
 

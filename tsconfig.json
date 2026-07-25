@@ -18,7 +18,11 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@thestudioxi/webmcp": ["packages/sdk/src/index.ts"]
+      "@thestudioxi/webmcp": ["packages/sdk/src/index.ts"],
+      "@webmcp/adapter-vercel-ai": ["packages/adapters/vercel-ai/src/index.ts"],
+      "@webmcp/adapter-express": ["packages/adapters/express/src/index.ts"],
+      "@webmcp/adapter-hono": ["packages/adapters/hono/src/index.ts"],
+      "@webmcp/adapter-nest": ["packages/adapters/nest/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "dist", "graphify-out"]
