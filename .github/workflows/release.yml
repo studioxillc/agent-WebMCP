@@ -1,30 +1,28 @@
-name: Release & Publish
+name: Release & Auto-Publish
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version tag to release (e.g. v0.1.0)'
-        required: true
-        default: 'v0.1.0'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
-    name: Build, Test & Publish to NPM
+    name: Changesets Automated Release
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
+      pull-requests: write
       id-token: write
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
@@ -41,32 +39,31 @@ jobs:
       - name: Run Type Checks
         run: bun run check
 
-      - name: Run Tests
+      - name: Run Unit Tests
         run: bun test
 
-      - name: Build SDK Package
+      - name: Build Packages
         run: bun run build
 
-      - name: Publish to NPM Registry
-        working-directory: packages/sdk
+      - name: Validate NPM_TOKEN
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN_SET: ${{ secrets.NPM_TOKEN != '' }}
         run: |
-          if [ -n "$NODE_AUTH_TOKEN" ]; then
-            echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
-            echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
-            npm publish --access public
-          else
-            npm publish --access public --provenance
+          if [ "$NPM_TOKEN_SET" != "true" ]; then
+            echo "::error::NPM_TOKEN secret is not configured. Publishing will fail."
+            echo "::error::Add NPM_TOKEN to repository secrets: Settings > Secrets > Actions > New repository secret"
+            exit 1
           fi
+          echo "✓ NPM_TOKEN is configured"
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - name: Create Release PR or Publish to NPM
+        id: changesets
+        uses: changesets/action@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body_path: CHANGELOG.md
-          draft: false
-          prerelease: false
+          publish: bun run publish-packages
+          version: bun run version-packages
+          commit: 'chore: version packages'
+          title: 'chore: release packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
