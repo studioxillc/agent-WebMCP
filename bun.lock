@@ -29,7 +29,7 @@
         "@ai-sdk/google": "^1.1.0",
         "@ai-sdk/openai": "^1.1.0",
         "@thestudioxi/webmcp": "workspace:*",
-        "@webmcp/adapter-vercel-ai": "workspace:*",
+        "@thestudioxi/webmcp-adapter-vercel-ai": "workspace:*",
         "ai": "^4.1.0",
         "dotenv": "^16.4.0",
         "next": "^15.1.0",
@@ -45,7 +45,7 @@
       },
     },
     "packages/adapters/express": {
-      "name": "@webmcp/adapter-express",
+      "name": "@thestudioxi/webmcp-adapter-express",
       "version": "0.1.0",
       "dependencies": {
         "@thestudioxi/webmcp": "workspace:*",
@@ -55,7 +55,7 @@
       },
     },
     "packages/adapters/hono": {
-      "name": "@webmcp/adapter-hono",
+      "name": "@thestudioxi/webmcp-adapter-hono",
       "version": "0.1.0",
       "dependencies": {
         "@thestudioxi/webmcp": "workspace:*",
@@ -65,7 +65,7 @@
       },
     },
     "packages/adapters/nest": {
-      "name": "@webmcp/adapter-nest",
+      "name": "@thestudioxi/webmcp-adapter-nest",
       "version": "0.1.0",
       "dependencies": {
         "@thestudioxi/webmcp": "workspace:*",
@@ -78,7 +78,7 @@
       ],
     },
     "packages/adapters/vercel-ai": {
-      "name": "@webmcp/adapter-vercel-ai",
+      "name": "@thestudioxi/webmcp-adapter-vercel-ai",
       "version": "0.1.0",
       "dependencies": {
         "@thestudioxi/webmcp": "workspace:*",
@@ -333,6 +333,14 @@
 
     "@thestudioxi/webmcp": ["@thestudioxi/webmcp@workspace:packages/sdk"],
 
+    "@thestudioxi/webmcp-adapter-express": ["@thestudioxi/webmcp-adapter-express@workspace:packages/adapters/express"],
+
+    "@thestudioxi/webmcp-adapter-hono": ["@thestudioxi/webmcp-adapter-hono@workspace:packages/adapters/hono"],
+
+    "@thestudioxi/webmcp-adapter-nest": ["@thestudioxi/webmcp-adapter-nest@workspace:packages/adapters/nest"],
+
+    "@thestudioxi/webmcp-adapter-vercel-ai": ["@thestudioxi/webmcp-adapter-vercel-ai@workspace:packages/adapters/vercel-ai"],
+
     "@types/bun": ["@types/bun@1.3.14", "", { "dependencies": { "bun-types": "1.3.14" } }, "sha512-h1hFqFVcvAvD9j9K7ZW7vd82aSA+rTdznZa+5bwvCwqSB1jmmfLcbIWhOLx1/+boy/xmjgCs/OMUL8hRJSmnPw=="],
 
     "@types/diff-match-patch": ["@types/diff-match-patch@1.0.36", "", {}, "sha512-xFdR6tkm0MWvBfO8xXCSsinYxHcqkQUlcHeSpMC2ukzOb6lwQAfDmW+Qt0AvlGd8HpsS28qKsB+oPeJn9I39jg=="],
@@ -344,14 +352,6 @@
     "@types/react": ["@types/react@19.2.17", "", { "dependencies": { "csstype": "^3.2.2" } }, "sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw=="],
 
     "@types/react-dom": ["@types/react-dom@19.2.3", "", { "peerDependencies": { "@types/react": "^19.2.0" } }, "sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ=="],
-
-    "@webmcp/adapter-express": ["@webmcp/adapter-express@workspace:packages/adapters/express"],
-
-    "@webmcp/adapter-hono": ["@webmcp/adapter-hono@workspace:packages/adapters/hono"],
-
-    "@webmcp/adapter-nest": ["@webmcp/adapter-nest@workspace:packages/adapters/nest"],
-
-    "@webmcp/adapter-vercel-ai": ["@webmcp/adapter-vercel-ai@workspace:packages/adapters/vercel-ai"],
 
     "accepts": ["accepts@2.0.0", "", { "dependencies": { "mime-types": "^3.0.0", "negotiator": "^1.0.0" } }, "sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng=="],
 

@@ -1,18 +1,18 @@
-# @webmcp/adapter-vercel-ai
+# @thestudioxi/webmcp-adapter-vercel-ai
 
 Vercel AI SDK adapter for **WebMCP** (Web Model Context Protocol). Converts WebMCP tool definitions into Vercel AI SDK `tool()` definitions.
 
 ## Installation
 
 ```bash
-bun add @thestudioxi/webmcp @webmcp/adapter-vercel-ai ai zod
+bun add @thestudioxi/webmcp @thestudioxi/webmcp-adapter-vercel-ai ai zod
 ```
 
 ## Usage
 
 ```ts
 import { streamText } from 'ai';
-import { webmcpToVercelAITools } from '@webmcp/adapter-vercel-ai';
+import { webmcpToVercelAITools } from '@thestudioxi/webmcp-adapter-vercel-ai';
 import { createBackendAgentClient } from '@thestudioxi/webmcp';
 
 const agentClient = createBackendAgentClient({ transport: myTransport });

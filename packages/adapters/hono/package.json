@@ -1,5 +1,5 @@
 {
-  "name": "@webmcp/adapter-hono",
+  "name": "@thestudioxi/webmcp-adapter-hono",
   "version": "0.1.0",
   "description": "Hono Framework Adapter for WebMCP",
   "main": "./dist/index.js",

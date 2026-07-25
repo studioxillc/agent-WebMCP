@@ -1,11 +1,11 @@
-# @webmcp/adapter-hono
+# @thestudioxi/webmcp-adapter-hono
 
-Hono framework adapter for **WebMCP** (Web Model Context Protocol).
+Hono framework route handler adapter for **WebMCP** (Web Model Context Protocol).
 
 ## Installation
 
 ```bash
-bun add @thestudioxi/webmcp @webmcp/adapter-hono hono
+bun add @thestudioxi/webmcp @thestudioxi/webmcp-adapter-hono hono
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ bun add @thestudioxi/webmcp @webmcp/adapter-hono hono
 ```ts
 import { Hono } from 'hono';
 import { WebStandardHttpTransport } from '@thestudioxi/webmcp';
-import { createHonoWebMCPHandler } from '@webmcp/adapter-hono';
+import { createHonoWebMCPHandler } from '@thestudioxi/webmcp-adapter-hono';
 
 const transport = new WebStandardHttpTransport();
 await transport.connect();

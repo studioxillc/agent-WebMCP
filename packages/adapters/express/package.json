@@ -1,5 +1,5 @@
 {
-  "name": "@webmcp/adapter-express",
+  "name": "@thestudioxi/webmcp-adapter-express",
   "version": "0.1.0",
   "description": "Express.js Middleware Adapter for WebMCP",
   "main": "./dist/index.js",

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test';
-import { createExpressWebMCPMiddleware } from '@webmcp/adapter-express';
-import { createHonoWebMCPHandler } from '@webmcp/adapter-hono';
-import { WebMCPAdapter, WebMCPNestAdapter } from '@webmcp/adapter-nest';
+import { createExpressWebMCPMiddleware } from '@thestudioxi/webmcp-adapter-express';
+import { createHonoWebMCPHandler } from '@thestudioxi/webmcp-adapter-hono';
+import { WebMCPAdapter, WebMCPNestAdapter } from '@thestudioxi/webmcp-adapter-nest';
 import {
   WebStandardHttpTransport,
   WebMCPServer,

@@ -8,7 +8,7 @@ import {
   createFrontendBridge,
   MessageChannelTransport,
 } from '@thestudioxi/webmcp';
-import { webmcpToVercelAITools } from '@webmcp/adapter-vercel-ai';
+import { webmcpToVercelAITools } from '@thestudioxi/webmcp-adapter-vercel-ai';
 
 export const runtime = 'nodejs';
 
