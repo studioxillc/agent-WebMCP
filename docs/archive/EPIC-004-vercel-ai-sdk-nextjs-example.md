@@ -1,4 +1,4 @@
-# EPIC-002: Vercel AI SDK Next.js Example & Integration
+# EPIC-004: Vercel AI SDK Next.js Example & Integration
 
 - **Status**: Completed
 - **Target Completion**: Phase 1

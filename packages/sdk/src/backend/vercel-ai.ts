@@ -7,6 +7,30 @@ import type { WebMCPToolDefinition } from '../types/index';
 export function jsonSchemaPropertyToZod(propSchema: Record<string, any> = {}): z.ZodTypeAny {
   let zodType: z.ZodTypeAny;
 
+  // Handle JSON Schema `const` keyword (fixed literal value)
+  if (propSchema.const !== undefined) {
+    zodType = z.literal(propSchema.const);
+    if (propSchema.description && typeof propSchema.description === 'string') {
+      zodType = zodType.describe(propSchema.description);
+    }
+    return zodType;
+  }
+
+  // Handle JSON Schema `enum` keyword (restricted set of values)
+  if (Array.isArray(propSchema.enum) && propSchema.enum.length > 0) {
+    const enumValues = propSchema.enum;
+    if (enumValues.every((v: unknown) => typeof v === 'string')) {
+      zodType = z.enum(enumValues as [string, ...string[]]);
+    } else {
+      const literals = enumValues.map((v: z.Primitive) => z.literal(v));
+      zodType = z.union([literals[0], literals[1] ?? literals[0], ...literals.slice(2)]);
+    }
+    if (propSchema.description && typeof propSchema.description === 'string') {
+      zodType = zodType.describe(propSchema.description);
+    }
+    return zodType;
+  }
+
   switch (propSchema.type) {
     case 'string':
       zodType = z.string();
