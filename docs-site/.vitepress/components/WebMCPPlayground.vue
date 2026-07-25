@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onMounted, nextTick } from 'vue'
+import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 
 // State
 const mode = ref('protocol') // 'protocol' | 'agent'
@@ -425,8 +425,29 @@ function clearLog() {
   messages.splice(0, messages.length)
 }
 
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function formatMessage(content) {
+  if (!content) return ''
+  const escaped = escapeHtml(content)
+  return escaped
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>')
+}
+
 onMounted(() => {
   connect()
+})
+
+onUnmounted(() => {
+  disconnect()
 })
 </script>
 
@@ -540,6 +561,7 @@ onMounted(() => {
           :class="['chat-message', msg.role]"
         >
           <div class="msg-role">{{ msg.role === 'user' ? '👤 You' : '🤖 Agent' }}</div>
+          <!-- eslint-disable-next-line vue/no-v-html -- Content is HTML-escaped before formatting -->
           <div class="msg-content" v-html="formatMessage(msg.content)"></div>
         </div>
         <div v-if="isLoading" class="chat-message assistant">
@@ -593,19 +615,7 @@ onMounted(() => {
   </div>
 </template>
 
-<script>
-export default {
-  methods: {
-    formatMessage(content) {
-      if (!content) return ''
-      return content
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>')
-    },
-  },
-}
-</script>
+
 
 <style scoped>
 .playground {

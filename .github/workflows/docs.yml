@@ -35,7 +35,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install Docs Dependencies
-        run: cd docs-site && bun install
+        run: cd docs-site && bun install --frozen-lockfile
 
       - name: Build VitePress Site
         run: cd docs-site && bun run build
