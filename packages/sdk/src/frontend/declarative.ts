@@ -2,7 +2,7 @@ import type { WebMCPToolDefinition, WebMCPToolHandler } from '../types/index';
 import { injectWebMCPPolyfill, type ModelContext } from './polyfill';
 
 export interface DeclarativeOptions {
-  root?: any;
+  root?: Document | Element | any;
   modelContext?: ModelContext;
   autoSubmitForm?: boolean;
 }
@@ -73,19 +73,20 @@ export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedD
     const handler: WebMCPToolHandler = async (args: Record<string, any>) => {
       // Populate inputs with args if called programmatically
       for (const [key, val] of Object.entries(args)) {
-        const matchingInput = el.querySelector(`[toolparam="${key}"], [name="${key}"]`) as any;
+        const matchingInput = el.querySelector(`[toolparam="${key}"], [name="${key}"]`) as Element | null;
         if (matchingInput) {
+          const inputEl = matchingInput as HTMLInputElement;
           if (matchingInput.getAttribute('type') === 'checkbox') {
-            matchingInput.checked = Boolean(val);
+            inputEl.checked = Boolean(val);
           } else {
-            matchingInput.value = String(val);
+            inputEl.value = String(val);
           }
         }
       }
 
       // Handle submit action if element is a form and autoSubmitForm is enabled
       if (autoSubmitForm && el.tagName === 'FORM') {
-        const formEl = el as any;
+        const formEl = el as HTMLFormElement | any;
         if (typeof formEl.requestSubmit === 'function') {
           formEl.requestSubmit();
         } else if (typeof formEl.submit === 'function') {
