@@ -83,7 +83,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/zhenximi/agent-WebMCP' },
+      { icon: 'github', link: 'https://github.com/studioxillc/agent-WebMCP' },
       { icon: 'npm', link: 'https://www.npmjs.com/package/@thestudioxi/webmcp' },
     ],
 
@@ -97,7 +97,7 @@ export default defineConfig({
     },
 
     editLink: {
-      pattern: 'https://github.com/zhenximi/agent-WebMCP/edit/main/docs-site/:path',
+      pattern: 'https://github.com/studioxillc/agent-WebMCP/edit/main/docs-site/:path',
       text: 'Edit this page on GitHub',
     },
   },

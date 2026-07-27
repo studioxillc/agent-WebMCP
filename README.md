@@ -1,12 +1,12 @@
 # agent-WebMCP 🚀
 
-[![CI](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/zhenximi/agent-WebMCP/actions/workflows/ci.yml)
+[![CI](https://github.com/studioxillc/agent-WebMCP/actions/workflows/ci.yml/badge.svg)](https://github.com/studioxillc/agent-WebMCP/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 **Open-source TypeScript SDK and AI-Native Toolset for WebMCP**  
 *Empowering Web AI Agents to seamlessly interact with local browser content, web extensions, and local network resources.*
 
-📖 **[Documentation](https://zhenximi.github.io/agent-WebMCP/)**
+📖 **[Documentation](https://studioxillc.github.io/agent-WebMCP/)**
 
 ---
 
@@ -195,7 +195,7 @@ bun run example:web
 
 ```bash
 # Clone the repository
-git clone https://github.com/zhenximi/agent-WebMCP.git
+git clone https://github.com/studioxillc/agent-WebMCP.git
 cd agent-WebMCP
 
 # Install workspace dependencies

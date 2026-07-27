@@ -36,21 +36,21 @@ onUnmounted(() => {
 <div class="wmcp-hero-actions">
   <a class="wmcp-btn wmcp-btn-brand" href="/agent-WebMCP/guide/getting-started">Get Started</a>
   <a class="wmcp-btn wmcp-btn-alt" href="/agent-WebMCP/demo/">Try the Demo</a>
-  <a class="wmcp-btn wmcp-btn-alt" href="https://github.com/zhenximi/agent-WebMCP" target="_blank">View on GitHub</a>
+  <a class="wmcp-btn wmcp-btn-alt" href="https://github.com/studioxillc/agent-WebMCP" target="_blank">View on GitHub</a>
 </div>
 
 <div class="wmcp-badges">
-  <a href="https://github.com/zhenximi/agent-WebMCP/actions"><img src="https://img.shields.io/github/actions/workflow/status/zhenximi/agent-WebMCP/ci.yml?branch=main&style=flat-square&label=CI" alt="CI Status" /></a>
+  <a href="https://github.com/studioxillc/agent-WebMCP/actions"><img src="https://img.shields.io/github/actions/workflow/status/studioxillc/agent-WebMCP/ci.yml?branch=main&style=flat-square&label=CI" alt="CI Status" /></a>
   <a href="https://www.npmjs.com/package/@thestudioxi/webmcp"><img src="https://img.shields.io/npm/v/@thestudioxi/webmcp?style=flat-square&color=10b981" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/@thestudioxi/webmcp"><img src="https://img.shields.io/npm/dw/@thestudioxi/webmcp?style=flat-square&color=10b981" alt="npm downloads" /></a>
-  <a href="https://github.com/zhenximi/agent-WebMCP"><img src="https://img.shields.io/github/stars/zhenximi/agent-WebMCP?style=flat-square" alt="GitHub stars" /></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/zhenximi/agent-WebMCP?style=flat-square" alt="License" /></a>
+  <a href="https://github.com/studioxillc/agent-WebMCP"><img src="https://img.shields.io/github/stars/studioxillc/agent-WebMCP?style=flat-square" alt="GitHub stars" /></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/github/license/studioxillc/agent-WebMCP?style=flat-square" alt="License" /></a>
 </div>
 
 <div class="wmcp-links">
   <a href="/agent-WebMCP/guide/getting-started">Docs</a>
   <span class="separator">&bull;</span>
-  <a href="https://github.com/zhenximi/agent-WebMCP">GitHub</a>
+  <a href="https://github.com/studioxillc/agent-WebMCP">GitHub</a>
   <span class="separator">&bull;</span>
   <a href="https://www.npmjs.com/package/@thestudioxi/webmcp">npm</a>
   <span class="separator">&bull;</span>

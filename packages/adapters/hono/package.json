@@ -23,6 +23,6 @@
   "peerDependencies": {
     "hono": "^4.0.0"
   },
-  "author": "zhenximi",
+  "author": "Studio Xi LLC",
   "license": "MIT"
 }
