@@ -63,6 +63,15 @@ When referencing internal workspace packages (e.g., `@thestudioxi/webmcp` in ada
 
 ---
 
+## 🚀 Release & Versioning Strategy
+
+This project uses [Changesets](https://github.com/changesets/changesets) for automated package versioning and NPM publishing:
+- **Fixed Version Group**: `@thestudioxi/webmcp` and all adapter packages (`@thestudioxi/webmcp-adapter-*`) are configured in a `fixed` version group in `.changeset/config.json`. Whenever any package in this group is bumped, all related packages in the group are released together with the exact same version number (in lockstep).
+- **Automated Patch Fallback**: When commits land on `main` without an explicit changeset file, our CI release workflow automatically generates a fallback patch changeset for all public workspace packages using `bun run generate:auto-patch`. This ensures continuous automated delivery of incremental improvements without requiring manual version bumps for every chore or documentation fix.
+
+
+---
+
 ## 📜 Pull Request Guidelines
 
 1. **Keep PRs Focused**: Each PR should address a single logical change or issue.
