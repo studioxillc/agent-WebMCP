@@ -9,7 +9,7 @@ export interface DeclarativeOptions {
 
 export interface ParsedDeclarativeTool {
   definition: WebMCPToolDefinition;
-  element: any; // HTMLFormElement or HTMLElement
+  element: Element;
 }
 
 /**
@@ -21,9 +21,10 @@ export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedD
     return [];
   }
 
-  const elements = Array.from(root.querySelectorAll('[toolname]')) as any[];
+  const elements = Array.from(root.querySelectorAll('[toolname]')) as Element[];
   const parsedTools: ParsedDeclarativeTool[] = [];
-  const mc = options.modelContext || (typeof window !== 'undefined' ? injectWebMCPPolyfill() : null);
+  const mc: ModelContext | null = options.modelContext || (typeof window !== 'undefined' ? injectWebMCPPolyfill() : null);
+  const autoSubmitForm = options.autoSubmitForm !== false;
 
   for (const el of elements) {
     const name = el.getAttribute('toolname');
@@ -32,7 +33,7 @@ export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedD
     const description = el.getAttribute('tooldescription') || el.getAttribute('title') || `Execute ${name} form action`;
 
     // Discover tool parameters from children or inputs
-    const paramElements = Array.from(el.querySelectorAll('[toolparam], input[name], textarea[name], select[name]')) as any[];
+    const paramElements = Array.from(el.querySelectorAll('[toolparam], input[name], textarea[name], select[name]')) as Element[];
     const properties: Record<string, any> = {};
     const required: string[] = [];
 
@@ -72,7 +73,7 @@ export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedD
     const handler: WebMCPToolHandler = async (args: Record<string, any>) => {
       // Populate inputs with args if called programmatically
       for (const [key, val] of Object.entries(args)) {
-        const matchingInput = el.querySelector(`[toolparam="${key}"], [name="${key}"]`);
+        const matchingInput = el.querySelector(`[toolparam="${key}"], [name="${key}"]`) as any;
         if (matchingInput) {
           if (matchingInput.getAttribute('type') === 'checkbox') {
             matchingInput.checked = Boolean(val);
@@ -82,12 +83,13 @@ export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedD
         }
       }
 
-      // Handle submit action if element is a form
-      if (el.tagName === 'FORM') {
-        if (typeof el.requestSubmit === 'function') {
-          el.requestSubmit();
-        } else if (typeof el.submit === 'function') {
-          el.submit();
+      // Handle submit action if element is a form and autoSubmitForm is enabled
+      if (autoSubmitForm && el.tagName === 'FORM') {
+        const formEl = el as any;
+        if (typeof formEl.requestSubmit === 'function') {
+          formEl.requestSubmit();
+        } else if (typeof formEl.submit === 'function') {
+          formEl.submit();
         }
       }
       return { success: true, tool: name, args };

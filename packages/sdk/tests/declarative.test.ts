@@ -65,6 +65,56 @@ describe('Declarative HTML Form Attribute Parser', () => {
     expect(registeredTools[0].name).toBe('search_catalog');
   });
 
+  test('should execute tool handler, populate input values, and trigger form submission', async () => {
+    const polyfill = new WebMCPPolyfill();
+    let submitted = false;
+
+    const mockInput = {
+      value: '',
+      getAttribute: (attr: string) => {
+        if (attr === 'toolparam' || attr === 'name') return 'username';
+        if (attr === 'type') return 'text';
+        return null;
+      },
+      hasAttribute: () => false,
+    };
+
+    const mockForm = {
+      getAttribute: (attr: string) => {
+        if (attr === 'toolname') return 'user_login';
+        return null;
+      },
+      querySelectorAll: (selector: string) => {
+        if (selector.includes('toolparam')) return [mockInput];
+        return [];
+      },
+      querySelector: (selector: string) => {
+        if (selector.includes('username')) return mockInput;
+        return null;
+      },
+      requestSubmit: () => {
+        submitted = true;
+      },
+      tagName: 'FORM',
+    };
+
+    const mockDocument = {
+      querySelectorAll: () => [mockForm],
+    };
+
+    parseDeclarativeTools({
+      root: mockDocument,
+      modelContext: polyfill,
+      autoSubmitForm: true,
+    });
+
+    const result = await polyfill.callTool('user_login', { username: 'alice' });
+
+    expect(result.success).toBe(true);
+    expect(mockInput.value).toBe('alice');
+    expect(submitted).toBe(true);
+  });
+
   test('should handle empty or invalid root gracefully', () => {
     const parsed = parseDeclarativeTools({ root: null });
     expect(parsed).toEqual([]);
