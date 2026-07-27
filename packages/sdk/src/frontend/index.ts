@@ -48,3 +48,7 @@ export class WebMCPBrowserBridge {
 export function createFrontendBridge(options: FrontendBridgeOptions): WebMCPBrowserBridge {
   return new WebMCPBrowserBridge(options);
 }
+
+export * from './polyfill';
+export * from './declarative';
+

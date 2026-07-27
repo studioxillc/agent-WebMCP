@@ -11,6 +11,7 @@
     "build": "bun run --cwd packages/sdk build && bun run build:adapters",
     "build:adapters": "bun run --cwd packages/adapters/vercel-ai build && bun run --cwd packages/adapters/express build && bun run --cwd packages/adapters/hono build && bun run --cwd packages/adapters/nest build",
     "check": "bun x tsc --noEmit",
+    "check:spec-drift": "bun run scripts/check-spec-drift.ts",
     "test": "bun test",
     "graphify": "./scripts/graphify.sh",
     "example:agent": "bun run --cwd examples/agentic-app start",

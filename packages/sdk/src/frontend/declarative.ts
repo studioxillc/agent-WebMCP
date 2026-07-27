@@ -1,0 +1,107 @@
+import type { WebMCPToolDefinition, WebMCPToolHandler } from '../types/index';
+import { injectWebMCPPolyfill, type ModelContext } from './polyfill';
+
+export interface DeclarativeOptions {
+  root?: Document | Element | any;
+  modelContext?: ModelContext;
+  autoSubmitForm?: boolean;
+}
+
+export interface ParsedDeclarativeTool {
+  definition: WebMCPToolDefinition;
+  element: Element;
+}
+
+/**
+ * Parses DOM elements with `toolname` attributes into WebMCP tool definitions.
+ */
+export function parseDeclarativeTools(options: DeclarativeOptions = {}): ParsedDeclarativeTool[] {
+  const root = options.root || (typeof document !== 'undefined' ? document : null);
+  if (!root || typeof root.querySelectorAll !== 'function') {
+    return [];
+  }
+
+  const elements = Array.from(root.querySelectorAll('[toolname]')) as Element[];
+  const parsedTools: ParsedDeclarativeTool[] = [];
+  const mc: ModelContext | null = options.modelContext || (typeof window !== 'undefined' ? injectWebMCPPolyfill() : null);
+  const autoSubmitForm = options.autoSubmitForm !== false;
+
+  for (const el of elements) {
+    const name = el.getAttribute('toolname');
+    if (!name) continue;
+
+    const description = el.getAttribute('tooldescription') || el.getAttribute('title') || `Execute ${name} form action`;
+
+    // Discover tool parameters from children or inputs
+    const paramElements = Array.from(el.querySelectorAll('[toolparam], input[name], textarea[name], select[name]')) as Element[];
+    const properties: Record<string, any> = {};
+    const required: string[] = [];
+
+    for (const input of paramElements) {
+      const paramName = input.getAttribute('toolparam') || input.getAttribute('name');
+      if (!paramName) continue;
+
+      const inputType = input.getAttribute('type') || 'text';
+      let jsonType: 'string' | 'number' | 'boolean' = 'string';
+      if (inputType === 'number' || inputType === 'range') {
+        jsonType = 'number';
+      } else if (inputType === 'checkbox') {
+        jsonType = 'boolean';
+      }
+
+      properties[paramName] = {
+        type: jsonType,
+        description: input.getAttribute('placeholder') || input.getAttribute('aria-label') || paramName,
+      };
+
+      if (input.hasAttribute('required')) {
+        required.push(paramName);
+      }
+    }
+
+    const definition: WebMCPToolDefinition = {
+      name,
+      description,
+      inputSchema: {
+        type: 'object',
+        properties,
+        ...(required.length > 0 ? { required } : {}),
+      },
+    };
+
+    // Construct form handler
+    const handler: WebMCPToolHandler = async (args: Record<string, any>) => {
+      // Populate inputs with args if called programmatically
+      for (const [key, val] of Object.entries(args)) {
+        const matchingInput = el.querySelector(`[toolparam="${key}"], [name="${key}"]`) as Element | null;
+        if (matchingInput) {
+          const inputEl = matchingInput as HTMLInputElement;
+          if (matchingInput.getAttribute('type') === 'checkbox') {
+            inputEl.checked = Boolean(val);
+          } else {
+            inputEl.value = String(val);
+          }
+        }
+      }
+
+      // Handle submit action if element is a form and autoSubmitForm is enabled
+      if (autoSubmitForm && el.tagName === 'FORM') {
+        const formEl = el as HTMLFormElement | any;
+        if (typeof formEl.requestSubmit === 'function') {
+          formEl.requestSubmit();
+        } else if (typeof formEl.submit === 'function') {
+          formEl.submit();
+        }
+      }
+      return { success: true, tool: name, args };
+    };
+
+    if (mc) {
+      mc.registerTool(definition, handler);
+    }
+
+    parsedTools.push({ definition, element: el });
+  }
+
+  return parsedTools;
+}
