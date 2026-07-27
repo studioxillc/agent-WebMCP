@@ -6,12 +6,12 @@ This directory maintains structural context, design decisions, product requireme
 
 | Subdirectory | Description | Status |
 | :--- | :--- | :--- |
-| [`architecture/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/architecture) | Architectural Decision Records (ADRs) & high-level component diagrams | Active |
-| [`prd/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/prd) | Product Requirements Documents (PRDs) defining feature scope | Active |
-| [`epics/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/epics) | Active development epics and granular task lists | Active |
-| [`bugfix/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/bugfix) | Active bugfix plans, root-cause analyses, and post-mortems | Active |
-| [`project-management/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/project-management) | Project roadmap, milestone status, and release planning | Active |
-| [`archive/`](file:///Users/zhenximi/Repositories/agent-WebMCP/docs/archive) | **Closed folder archiving completed epics, PRDs, and task documents** | Closed / Archive |
+| [`architecture/`](./architecture) | Architectural Decision Records (ADRs) & high-level component diagrams | Active |
+| [`prd/`](./prd) | Product Requirements Documents (PRDs) defining feature scope | Active |
+| [`epics/`](./epics) | Active development epics and granular task lists | Active |
+| [`bugfix/`](./bugfix) | Active bugfix plans, root-cause analyses, and post-mortems | Active |
+| [`project-management/`](./project-management) | Project roadmap, milestone status, and release planning | Active |
+| [`archive/`](./archive) | **Closed folder archiving completed epics, PRDs, and task documents** | Closed / Archive |
 
 ---
 

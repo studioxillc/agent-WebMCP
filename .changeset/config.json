@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@2.3.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "zhenximi/agent-WebMCP" }],
+  "changelog": ["@changesets/changelog-github", { "repo": "studioxillc/agent-WebMCP" }],
   "commit": false,
   "fixed": [],
   "linked": [],

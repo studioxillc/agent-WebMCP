@@ -1,6 +1,6 @@
 {
   "name": "agent-webmcp-monorepo",
-  "author": "zhenximi",
+  "author": "Studio Xi LLC",
   "private": true,
   "workspaces": [
     "packages/*",
