@@ -74,17 +74,7 @@ jobs:
           if [ "$CHANGESET_COUNT" -eq 0 ] && [ "$CURRENT_VER" = "$NPM_VER" ]; then
             echo "No explicit changeset found and version $CURRENT_VER is already published on NPM."
             echo "Generating automatic patch changeset..."
-            cat << 'EOF' > .changeset/auto-patch-release.md
----
-"@thestudioxi/webmcp": patch
-"@thestudioxi/webmcp-adapter-express": patch
-"@thestudioxi/webmcp-adapter-hono": patch
-"@thestudioxi/webmcp-adapter-nest": patch
-"@thestudioxi/webmcp-adapter-vercel-ai": patch
----
-
-auto: patch version release
-EOF
+            printf '---\n"@thestudioxi/webmcp": patch\n"@thestudioxi/webmcp-adapter-express": patch\n"@thestudioxi/webmcp-adapter-hono": patch\n"@thestudioxi/webmcp-adapter-nest": patch\n"@thestudioxi/webmcp-adapter-vercel-ai": patch\n---\n\nauto: patch version release\n' > .changeset/auto-patch-release.md
           fi
 
           echo "Bumping versions with Changesets..."
