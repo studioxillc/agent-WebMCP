@@ -8,7 +8,7 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:*"
+    "@thestudioxi/webmcp": "workspace:^0.1.1"
   },
   "devDependencies": {
     "vite": "^5.4.0"

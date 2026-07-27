@@ -18,7 +18,7 @@
     "check": "bun x tsc --noEmit"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:*",
+    "@thestudioxi/webmcp": "workspace:^0.1.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {
