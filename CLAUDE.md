@@ -21,3 +21,4 @@
 - Use `bun` exclusively as runtime and test runner.
 - Maintain strict TypeScript types across all workspace packages.
 - Move completed Epics to `docs/archive/` upon task completion.
+- **Never push directly to `main`**: Always create a feature branch and open a PR via `gh pr create` for any change.

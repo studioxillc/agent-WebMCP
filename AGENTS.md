@@ -11,6 +11,8 @@ Welcome AI Agent! You are working on **agent-WebMCP**, an open-source SDK and to
    - Use `docs/archive/` to store completed Epics, PRDs, and closed bugfixes.
 4. **Codebase Understanding with Graphify**:
    - Before executing large refactors or navigating multi-file relationships, run `bun run graphify` or inspect existing `graphify-out/` artifacts.
+5. **Always Create Pull Requests**:
+   - **Never push directly to `main`**. Every feature, bugfix, or doc update MUST be committed on a feature branch (`feat/*`, `fix/*`, `docs/*`, `chore/*`) and submitted as a GitHub Pull Request using `gh pr create`.
 
 ---
 
