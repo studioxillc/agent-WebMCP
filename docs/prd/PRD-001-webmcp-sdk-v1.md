@@ -28,6 +28,6 @@ Developers building web AI agents currently struggle to communicate with browser
 ### Non-Functional
 - **Performance**: Sub-10ms JSON serialization overhead.
 - **Type Safety**: Strict TypeScript compilation and declaration generation (`.d.ts`).
-- **Compatibility**: Compatible with Bun >= 1.0, Node >= 18, and modern Web browsers.
+- **Compatibility**: Compatible with Bun >= 1.0, Node >= 18, Deno >= 1.30 (via Web Standard Request/Response), and modern Web browsers.
 - **Release Automation**: Changesets & GitHub Actions release pipeline.
 
