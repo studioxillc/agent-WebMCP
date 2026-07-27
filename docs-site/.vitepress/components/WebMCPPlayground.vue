@@ -175,7 +175,7 @@ async function connect() {
   clientPort.start()
 
   isConnected.value = true
-  addLog('system', 'info', { message: '✅ WebMCP connection established via MessageChannel' })
+  addLog('system', 'info', { message: 'WebMCP connection established via MessageChannel' })
 
   // Auto-list tools
   await listTools()
@@ -190,7 +190,7 @@ async function disconnect() {
   tools.value = []
   selectedTool.value = ''
   toolResult.value = null
-  addLog('system', 'info', { message: '🔌 WebMCP connection closed' })
+  addLog('system', 'info', { message: 'WebMCP connection closed' })
 }
 
 async function listTools() {
@@ -358,7 +358,7 @@ async function sendChatMessage() {
 
           addLog('incoming', 'response', { jsonrpc: '2.0', id: 'ai-google', result })
 
-          chatMessages.push({ role: 'assistant', content: `🔧 Called \`${toolName}\` → ${JSON.stringify(result)}` })
+          chatMessages.push({ role: 'assistant', content: `Called \`${toolName}\` → ${JSON.stringify(result)}` })
         }
       }
 
@@ -371,7 +371,7 @@ async function sendChatMessage() {
       }
     }
   } catch (err) {
-    chatMessages.push({ role: 'assistant', content: `❌ Error: ${err.message}` })
+    chatMessages.push({ role: 'assistant', content: `Error: ${err.message}` })
   } finally {
     isLoading.value = false
     nextTick(() => {
@@ -398,7 +398,7 @@ async function sendFollowUp() {
     const content = data.choices?.[0]?.message?.content || '(empty response)'
     chatMessages.push({ role: 'assistant', content })
   } catch (err) {
-    chatMessages.push({ role: 'assistant', content: `❌ Follow-up error: ${err.message}` })
+    chatMessages.push({ role: 'assistant', content: `Follow-up error: ${err.message}` })
   }
 }
 
@@ -459,13 +459,15 @@ onUnmounted(() => {
         :class="['mode-tab', { active: mode === 'protocol' }]"
         @click="mode = 'protocol'"
       >
-        🔬 Protocol Explorer
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M224 152v-8a32 32 0 0 0-32-32h-40a8 8 0 0 1-8-8V64a32 32 0 0 0-32-32h-8a8 8 0 0 0 0 16h8a16 16 0 0 1 16 16v40a24 24 0 0 0 24 24h40a16 16 0 0 1 16 16v8a16 16 0 0 1-16 16h-40a24 24 0 0 0-24 24v40a16 16 0 0 1-16 16h-8a8 8 0 0 0 0 16h8a32 32 0 0 0 32-32v-40a8 8 0 0 1 8-8h40a32 32 0 0 0 32-32Z"/></svg>
+        Protocol Explorer
       </button>
       <button
         :class="['mode-tab', { active: mode === 'agent' }]"
         @click="mode = 'agent'"
       >
-        🤖 AI Agent Chat
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M200 48H136V16a8 8 0 0 0-16 0v32H56a32 32 0 0 0-32 32v88a32 32 0 0 0 32 32h56v24H96a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16h-16v-24h56a32 32 0 0 0 32-32V80a32 32 0 0 0-32-32Zm16 120a16 16 0 0 1-16 16H56a16 16 0 0 1-16-16V80a16 16 0 0 1 16-16h144a16 16 0 0 1 16 16ZM80 108a12 12 0 1 1 12 12a12 12 0 0 1-12-12Zm72 0a12 12 0 1 1 12 12a12 12 0 0 1-12-12Z"/></svg>
+        AI Agent Chat
       </button>
     </div>
 
@@ -486,7 +488,7 @@ onUnmounted(() => {
         <!-- Tools Panel -->
         <div class="panel">
           <div class="panel-header">
-            <h3>📋 Tools</h3>
+            <h3>Tools</h3>
             <button @click="listTools" class="btn btn-sm btn-secondary" :disabled="!isConnected">
               Refresh
             </button>
@@ -507,7 +509,7 @@ onUnmounted(() => {
         <!-- Execute Panel -->
         <div class="panel">
           <div class="panel-header">
-            <h3>⚡ Execute</h3>
+            <h3>Execute</h3>
           </div>
           <div class="execute-form" v-if="selectedTool">
             <label>Tool: <code>{{ selectedTool }}</code></label>
@@ -546,26 +548,26 @@ onUnmounted(() => {
           />
         </div>
         <p class="key-notice">
-          🔒 Your API key stays in the browser. It is never sent to any server except {{ provider === 'openai' ? 'api.openai.com' : 'generativelanguage.googleapis.com' }}.
+          Your API key stays in the browser. It is never sent to any server except {{ provider === 'openai' ? 'api.openai.com' : 'generativelanguage.googleapis.com' }}.
         </p>
       </div>
 
       <div class="chat-container" ref="chatRef">
         <div v-if="chatMessages.length === 0" class="chat-empty">
-          <p>💬 Ask the AI agent anything — it has access to <strong>{{ tools.length }} WebMCP tools</strong>.</p>
-          <p class="chat-suggestions">Try: "What page am I on?" · "Calculate 42 * 17" · "Generate a UUID" · "What browser am I using?"</p>
+          <p>Ask the AI agent anything — it has access to <strong>{{ tools.length }} WebMCP tools</strong>.</p>
+          <p class="chat-suggestions">Try: "What page am I on?" &middot; "Calculate 42 * 17" &middot; "Generate a UUID" &middot; "What browser am I using?"</p>
         </div>
         <div
           v-for="(msg, i) in chatMessages.filter(m => m.role !== 'tool')"
           :key="i"
           :class="['chat-message', msg.role]"
         >
-          <div class="msg-role">{{ msg.role === 'user' ? '👤 You' : '🤖 Agent' }}</div>
+          <div class="msg-role">{{ msg.role === 'user' ? 'You' : 'Agent' }}</div>
           <!-- eslint-disable-next-line vue/no-v-html -- Content is HTML-escaped before formatting -->
           <div class="msg-content" v-html="formatMessage(msg.content)"></div>
         </div>
         <div v-if="isLoading" class="chat-message assistant">
-          <div class="msg-role">🤖 Agent</div>
+          <div class="msg-role">Agent</div>
           <div class="msg-content typing">Thinking...</div>
         </div>
       </div>
@@ -591,7 +593,7 @@ onUnmounted(() => {
     <!-- JSON-RPC Log -->
     <div class="log-panel">
       <div class="panel-header">
-        <h3>📡 JSON-RPC Message Log</h3>
+        <h3>JSON-RPC Message Log</h3>
         <button @click="clearLog" class="btn btn-sm btn-secondary">Clear</button>
       </div>
       <div class="log-container" ref="logRef">
@@ -623,6 +625,7 @@ onUnmounted(() => {
   margin: 0 auto;
 }
 
+/* ── Mode Tabs ── */
 .mode-tabs {
   display: flex;
   gap: 0;
@@ -641,7 +644,21 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mode-tab svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.mode-tab.active svg {
+  opacity: 1;
 }
 
 .mode-tab.active {
@@ -653,6 +670,11 @@ onUnmounted(() => {
   background: var(--vp-c-bg-mute);
 }
 
+.mode-tab:active {
+  transform: scale(0.98) translateY(1px);
+}
+
+/* ── Status Bar ── */
 .status-bar {
   display: flex;
   align-items: center;
@@ -669,25 +691,34 @@ onUnmounted(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #e74c3c;
+  background: #ef4444;
   flex-shrink: 0;
+  transition: all 0.3s;
 }
 
 .status-dot.connected {
-  background: #2ecc71;
-  box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
+  background: var(--vp-c-brand-1);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 6px rgba(16, 185, 129, 0.5); }
+  50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.8); }
 }
 
 .tool-count {
   margin-left: auto;
   margin-right: 8px;
   color: var(--vp-c-text-3);
+  font-variant-numeric: tabular-nums;
 }
 
 .status-actions {
   flex-shrink: 0;
 }
 
+/* ── Panel Grid ── */
 .panel-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -705,6 +736,11 @@ onUnmounted(() => {
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
   overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.panel:hover {
+  border-color: color-mix(in srgb, var(--vp-c-divider) 60%, var(--vp-c-brand-1) 40%);
 }
 
 .panel-header {
@@ -718,10 +754,14 @@ onUnmounted(() => {
 
 .panel-header h3 {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-2);
 }
 
+/* ── Tool List with Stagger Animation ── */
 .tool-list {
   max-height: 300px;
   overflow-y: auto;
@@ -731,7 +771,25 @@ onUnmounted(() => {
   padding: 10px 16px;
   cursor: pointer;
   border-bottom: 1px solid var(--vp-c-divider);
-  transition: background 0.15s;
+  transition: background 0.15s, border-left-color 0.2s, transform 0.15s;
+  animation: toolSlideIn 0.35s ease both;
+}
+
+.tool-item:nth-child(1) { animation-delay: 0ms; }
+.tool-item:nth-child(2) { animation-delay: 60ms; }
+.tool-item:nth-child(3) { animation-delay: 120ms; }
+.tool-item:nth-child(4) { animation-delay: 180ms; }
+.tool-item:nth-child(5) { animation-delay: 240ms; }
+
+@keyframes toolSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .tool-item:last-child {
@@ -760,6 +818,7 @@ onUnmounted(() => {
   margin-top: 2px;
 }
 
+/* ── Execute Form ── */
 .execute-form {
   padding: 16px;
   display: flex;
@@ -789,10 +848,19 @@ onUnmounted(() => {
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   resize: vertical;
+  transition: border-color 0.2s;
 }
 
+.args-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
+}
+
+/* ── Result Box ── */
 .result-box {
   margin-top: 4px;
+  animation: fadeIn 0.3s ease;
 }
 
 .result-box pre {
@@ -804,8 +872,15 @@ onUnmounted(() => {
   margin: 4px 0 0 0;
   white-space: pre-wrap;
   word-break: break-all;
+  border-left: 3px solid var(--vp-c-brand-1);
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ── Empty State ── */
 .empty-state {
   padding: 40px 16px;
   text-align: center;
@@ -813,7 +888,7 @@ onUnmounted(() => {
   font-size: 14px;
 }
 
-/* Buttons */
+/* ── Buttons — Tactile Feedback ── */
 .btn {
   padding: 8px 16px;
   border: none;
@@ -821,12 +896,16 @@ onUnmounted(() => {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97) translateY(1px);
 }
 
 .btn-primary {
@@ -852,12 +931,13 @@ onUnmounted(() => {
   font-size: 12px;
 }
 
-/* Agent Mode */
+/* ── Agent Mode ── */
 .agent-config {
   padding: 16px;
   background: var(--vp-c-bg-soft);
   border-radius: 10px;
   margin-bottom: 16px;
+  border: 1px solid var(--vp-c-divider);
 }
 
 .config-row {
@@ -873,6 +953,12 @@ onUnmounted(() => {
   color: var(--vp-c-text-1);
   font-size: 13px;
   flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.provider-select:focus {
+  outline: none;
+  border-color: var(--vp-c-brand-1);
 }
 
 .api-key-input {
@@ -884,6 +970,13 @@ onUnmounted(() => {
   color: var(--vp-c-text-1);
   font-family: var(--vp-font-family-mono);
   font-size: 13px;
+  transition: border-color 0.2s;
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
 }
 
 .key-notice {
@@ -891,8 +984,27 @@ onUnmounted(() => {
   color: var(--vp-c-text-3);
   margin-top: 8px;
   margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
+.key-notice::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M208 80H176V56a48 48 0 0 0-96 0v24H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16Zm-80 84a12 12 0 1 1 12-12a12 12 0 0 1-12 12Zm32-84H96V56a32 32 0 0 1 64 0Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M208 80H176V56a48 48 0 0 0-96 0v24H48a16 16 0 0 0-16 16v112a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16Zm-80 84a12 12 0 1 1 12-12a12 12 0 0 1-12 12Zm32-84H96V56a32 32 0 0 1 64 0Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+/* ── Chat Container ── */
 .chat-container {
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
@@ -917,19 +1029,34 @@ onUnmounted(() => {
   font-style: italic;
 }
 
+/* ── Chat Messages — Fade-in Animation ── */
 .chat-message {
   margin-bottom: 16px;
+  animation: msgFadeIn 0.35s ease both;
 }
 
 .chat-message:last-child {
   margin-bottom: 0;
 }
 
+@keyframes msgFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .msg-role {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--vp-c-text-3);
   margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .msg-content {
@@ -938,9 +1065,26 @@ onUnmounted(() => {
   color: var(--vp-c-text-1);
 }
 
+/* ── Shimmer Loading State ── */
 .msg-content.typing {
   color: var(--vp-c-text-3);
-  font-style: italic;
+  font-style: normal;
+  background: linear-gradient(
+    90deg,
+    var(--vp-c-text-3) 0%,
+    var(--vp-c-text-2) 50%,
+    var(--vp-c-text-3) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .chat-message.user .msg-content {
@@ -948,6 +1092,11 @@ onUnmounted(() => {
   padding: 8px 12px;
   border-radius: 8px;
   display: inline-block;
+}
+
+/* ── Error Messages ── */
+.chat-message.assistant .msg-content:has(code:first-child) {
+  /* Error messages that start with code blocks */
 }
 
 .chat-input-row {
@@ -963,13 +1112,20 @@ onUnmounted(() => {
   background: var(--vp-c-bg);
   color: var(--vp-c-text-1);
   font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 0 0 3px var(--vp-c-brand-soft);
 }
 
 .chat-input:disabled {
   opacity: 0.5;
 }
 
-/* Log Panel */
+/* ── Log Panel ── */
 .log-panel {
   border: 1px solid var(--vp-c-divider);
   border-radius: 10px;
@@ -994,10 +1150,22 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap: 6px;
   align-items: flex-start;
+  animation: logSlideIn 0.2s ease both;
+}
+
+@keyframes logSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .log-entry.outgoing { border-left: 3px solid var(--vp-c-brand-1); }
-.log-entry.incoming { border-left: 3px solid #2ecc71; }
+.log-entry.incoming { border-left: 3px solid #34d399; }
 .log-entry.system { border-left: 3px solid var(--vp-c-text-3); }
 
 .log-time {
@@ -1011,7 +1179,7 @@ onUnmounted(() => {
 }
 
 .log-entry.outgoing .log-direction { color: var(--vp-c-brand-1); }
-.log-entry.incoming .log-direction { color: #2ecc71; }
+.log-entry.incoming .log-direction { color: #34d399; }
 .log-entry.system .log-direction { color: var(--vp-c-text-3); }
 
 .log-type {
@@ -1034,5 +1202,29 @@ onUnmounted(() => {
   color: var(--vp-c-text-2);
   max-height: 120px;
   overflow-y: auto;
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .tool-item,
+  .chat-message,
+  .log-entry,
+  .result-box {
+    animation: none;
+  }
+
+  .status-dot.connected {
+    animation: none;
+  }
+
+  .msg-content.typing {
+    animation: none;
+    -webkit-text-fill-color: var(--vp-c-text-3);
+  }
+
+  .mode-tab:active,
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
 }
 </style>

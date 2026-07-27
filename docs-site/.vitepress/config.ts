@@ -6,10 +6,23 @@ export default defineConfig({
   base: '/agent-WebMCP/',
 
   head: [
-    ['meta', { name: 'theme-color', content: '#6d5ce7' }],
+    // SEO
+    ['meta', { name: 'theme-color', content: '#10b981' }],
     ['meta', { name: 'og:type', content: 'website' }],
-    ['meta', { name: 'og:title', content: 'WebMCP — Web AI Agent SDK' }],
-    ['meta', { name: 'og:description', content: 'Empowering Web AI Agents to seamlessly interact with browser content and local network resources.' }],
+    ['meta', { name: 'og:title', content: 'WebMCP — TypeScript SDK for Web AI Agents' }],
+    ['meta', { name: 'og:description', content: 'Bi-directional communication between AI agent runtimes and browser content via Model Context Protocol.' }],
+    ['meta', { name: 'og:image', content: '/agent-WebMCP/logo.svg' }],
+    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { name: 'twitter:title', content: 'WebMCP — TypeScript SDK for Web AI Agents' }],
+    ['meta', { name: 'twitter:description', content: 'Bi-directional communication between AI agent runtimes and browser content via Model Context Protocol.' }],
+
+    // Font preloads — Geist (via CDN)
+    ['link', { rel: 'preconnect', href: 'https://cdn.jsdelivr.net', crossorigin: '' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+
+    // Favicon
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/agent-WebMCP/logo.svg' }],
   ],
 
   themeConfig: {
