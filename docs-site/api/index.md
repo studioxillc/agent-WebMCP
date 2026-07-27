@@ -218,7 +218,65 @@ const handler = createWebMCPHttpHandler(transport);
 
 ---
 
+## W3C Standard Polyfill & Declarative HTML Tools
+
+### `WebMCPPolyfill` & `injectWebMCPPolyfill(targetWindow?)`
+
+Browser polyfill for the W3C WebMCP `window.navigator.modelContext` proposal.
+
+```ts
+import { injectWebMCPPolyfill, WebMCPPolyfill } from '@thestudioxi/webmcp/frontend';
+
+// Safe global injection into window.navigator.modelContext
+const modelContext = injectWebMCPPolyfill();
+
+modelContext.registerTool({
+  name: 'calculate_discount',
+  description: 'Calculates cart total after discount',
+  inputSchema: {
+    type: 'object',
+    properties: { price: { type: 'number' }, code: { type: 'string' } },
+  },
+}, async (args) => {
+  return { finalPrice: args.price * 0.9 };
+});
+```
+
+| Method | Signature | Description |
+|---|---|---|
+| `registerTool` | `(definition, handler) => void` | Register a W3C MCP tool |
+| `unregisterTool` | `(name: string) => boolean` | Unregister a tool |
+| `listTools` | `() => WebMCPToolDefinition[]` | List registered tools |
+| `callTool` | `(name: string, params?: Record<string, any>) => Promise<any>` | Invoke a tool |
+
+---
+
+### `parseDeclarativeTools(options)`
+
+Parses HTML `<form toolname="...">` and `<input toolparam="...">` elements into WebMCP tools automatically.
+
+```html
+<form toolname="search_products" tooldescription="Search catalog by query">
+  <input name="query" toolparam="query" placeholder="Enter keyword" required />
+  <input name="limit" toolparam="limit" type="number" placeholder="Max results" />
+  <button type="submit">Search</button>
+</form>
+```
+
+```ts
+import { parseDeclarativeTools } from '@thestudioxi/webmcp/frontend';
+
+// Automatically parses HTML elements and registers tools on navigator.modelContext
+const parsedTools = parseDeclarativeTools({
+  root: document,
+  autoSubmitForm: true,
+});
+```
+
+---
+
 ## Adapter Functions
+
 
 ### `createExpressWebMCPMiddleware(transport)`
 
