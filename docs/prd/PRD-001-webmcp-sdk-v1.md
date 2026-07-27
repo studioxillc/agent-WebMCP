@@ -1,29 +1,33 @@
 # PRD-001: WebMCP TypeScript SDK v1.0
 
-- **Status**: Draft / Active
+- **Status**: Completed (v1.0.0)
 - **Target Version**: v1.0.0
-- **Primary Package**: `@webmcp/sdk`
+- **Primary Package**: `@thestudioxi/webmcp`
+- **Adapters**: `@thestudioxi/webmcp-adapter-vercel-ai`, `@thestudioxi/webmcp-adapter-express`, `@thestudioxi/webmcp-adapter-hono`
 
 ## Problem Statement
 
-Developers building web AI agents currently struggle to communicate with browser tabs, browser extension states, and local network devices without custom ad-hoc WebSocket glue code.
+Developers building web AI agents currently struggle to communicate with browser tabs, browser extension states, and local network devices without custom ad-hoc WebSocket or HTTP glue code.
 
 ## Goals
 
-1. Provide an open-source, developer-friendly TypeScript SDK built on Bun.
-2. Enable zero-config tool registration and execution over bi-directional transports.
-3. Include pre-built transports for WebSocket and MessageChannel.
-4. Deliver an example agentic application demonstrating local browser context control using a Pi Agent / DeepAgent pattern.
+1. Provide an open-source, developer-friendly TypeScript SDK built on Bun (`@thestudioxi/webmcp`).
+2. Enable zero-config tool registration and execution over bi-directional transports (`WebSocketTransport`, `MessageChannelTransport`, `HttpStandardTransport`).
+3. Offer modular framework adapters for Vercel AI SDK, Express, and Hono.
+4. Deliver interactive documentation & playground (`docs-site`) along with example applications.
 
 ## Requirements
 
 ### Functional
-- `client.registerTool(toolDef, handler)`: Register local or browser tools dynamically.
+- `client.registerTool(toolDef, handler)` / `WebMCPClient`: Register local or browser tools dynamically.
 - `client.callTool(name, args)`: Execute tool and await response.
-- `server.listen(port)`: Host local WebMCP bridge for browser clients.
-- `transport.send(message)` / `transport.onMessage(callback)`: Standard JSON-RPC event routing.
+- `server.listen(port)` / `WebMCPServer`: Host local WebMCP bridge for browser clients.
+- `transport.send(message)` / `transport.onMessage(callback)`: Standard JSON-RPC 2.0 event routing.
+- Framework Adapters: `createVercelAITools()`, `createExpressMiddleware()`, `createHonoHandler()`, `WebMCPAdapter`.
 
 ### Non-Functional
-- **Performance**: Sub-10ms JSON serialization overhead over local WebSockets.
-- **Type Safety**: Full TypeScript declaration generation (`.d.ts`).
+- **Performance**: Sub-10ms JSON serialization overhead.
+- **Type Safety**: Strict TypeScript compilation and declaration generation (`.d.ts`).
 - **Compatibility**: Compatible with Bun >= 1.0, Node >= 18, and modern Web browsers.
+- **Release Automation**: Changesets & GitHub Actions release pipeline.
+
