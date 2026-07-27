@@ -18,7 +18,7 @@
     "check": "bun x tsc --noEmit"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:*"
+    "@thestudioxi/webmcp": "workspace:^0.1.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0 || ^10.0.0"

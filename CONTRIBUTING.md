@@ -46,10 +46,20 @@ This project uses [Bun](https://bun.sh) as the package manager, test runner, and
 
 ## 📐 Project Structure
 
-- `packages/sdk`: Core `@webmcp/sdk` TypeScript package.
+- `packages/sdk`: Core `@thestudioxi/webmcp` TypeScript package.
+- `packages/adapters/*`: Framework adapters (Express, Hono, Nest, Vercel AI).
 - `examples/agentic-app`: Example AI Agent application demonstrating WebMCP tool execution.
 - `skills/`: Project-specific skills for AI assistants working in this repository.
 - `docs/`: System architecture decision records (ADRs), PRDs, epics, bugfixes, and `docs/archive/` for completed tasks.
+
+---
+
+## 📦 Monorepo Dependency Guidelines
+
+When referencing internal workspace packages (e.g., `@thestudioxi/webmcp` in adapter or example packages):
+- Use explicit semver range declarations with the workspace protocol (e.g., `"@thestudioxi/webmcp": "workspace:^0.1.1"`), rather than unbounded wildcards (`"workspace:*"`).
+- This ensures published packages clearly define their minimum version compatibility for NPM distribution while seamlessly resolving to local workspace sources in local development and CI builds.
+
 
 ---
 
