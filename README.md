@@ -6,7 +6,7 @@
 **Open-source TypeScript SDK and AI-Native Toolset for WebMCP**  
 *Empowering Web AI Agents to seamlessly interact with local browser content, web extensions, and local network resources.*
 
-📖 **[Documentation](https://studioxillc.github.io/agent-WebMCP/)**
+📖 **[Documentation](https://studioxillc.github.io/agent-WebMCP/)** · 🎯 **[Vision & Spec Alignment](./VISION.md)**
 
 ---
 
