@@ -1,6 +1,6 @@
 {
   "name": "@thestudioxi/webmcp-adapter-express",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "description": "Express.js Middleware Adapter for WebMCP",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -18,7 +18,7 @@
     "check": "bun x tsc --noEmit"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:^0.2.0"
+    "@thestudioxi/webmcp": "workspace:^0.3.0"
   },
   "peerDependencies": {
     "express": "^4.0.0 || ^5.0.0"

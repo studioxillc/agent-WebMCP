@@ -1,6 +1,6 @@
 {
   "name": "@thestudioxi/webmcp-adapter-vercel-ai",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "description": "Vercel AI SDK Adapter for WebMCP (Model Context Protocol)",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -18,7 +18,7 @@
     "check": "bun x tsc --noEmit"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:^0.2.0",
+    "@thestudioxi/webmcp": "workspace:^0.3.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
