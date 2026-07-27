@@ -49,28 +49,77 @@ jobs:
       - name: Run Unit Tests
         run: bun test
 
+      - name: Prepare & Version Packages
+        id: prepare_version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -eo pipefail
+          CURRENT_VER=$(node -p "require('./packages/sdk/package.json').version")
+          NPM_VER=$(npm info @thestudioxi/webmcp@$CURRENT_VER version 2>/dev/null || echo "")
+          CHANGESET_COUNT=$(find .changeset -name "*.md" ! -name "README.md" | wc -l | tr -d ' ')
+
+          echo "Current package.json version: $CURRENT_VER"
+          if [ -n "$NPM_VER" ]; then
+            echo "NPM published version: $NPM_VER (matches local version)"
+          else
+            echo "NPM published version: not published yet or query returned empty"
+          fi
+          echo "Changeset files count: $CHANGESET_COUNT"
+
+          # Auto-Patch Fallback:
+          # If no changeset files exist in .changeset/ and the current package.json version is already
+          # published on NPM (meaning code changes landed on main without a manual changeset or version bump),
+          # generate an automatic patch changeset so this CI run bumps packages and releases to NPM.
+          if [ "$CHANGESET_COUNT" -eq 0 ] && [ "$CURRENT_VER" = "$NPM_VER" ]; then
+            echo "No explicit changeset found and version $CURRENT_VER is already published on NPM."
+            echo "Generating automatic patch changeset..."
+            cat << 'EOF' > .changeset/auto-patch-release.md
+---
+"@thestudioxi/webmcp": patch
+"@thestudioxi/webmcp-adapter-express": patch
+"@thestudioxi/webmcp-adapter-hono": patch
+"@thestudioxi/webmcp-adapter-nest": patch
+"@thestudioxi/webmcp-adapter-vercel-ai": patch
+---
+
+auto: patch version release
+EOF
+          fi
+
+          echo "Bumping versions with Changesets..."
+          bun run version-packages
+
       - name: Build Packages
         run: bun run build
 
-      - name: Validate NPM_TOKEN
-        env:
-          NPM_TOKEN_SET: ${{ secrets.NPM_TOKEN != '' }}
-        run: |
-          if [ "$NPM_TOKEN_SET" != "true" ]; then
-            echo "::error::NPM_TOKEN secret is not configured. Publishing will fail."
-            echo "::error::Add NPM_TOKEN to repository secrets: Settings > Secrets > Actions > New repository secret"
-            exit 1
-          fi
-          echo "✓ NPM_TOKEN is configured"
-
-      - name: Create Release PR or Publish to NPM
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: bun run publish-packages
-          version: bun run version-packages
-          commit: 'chore: version packages'
-          title: 'chore: release packages'
+      - name: Publish to NPM & Sync Release Tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::error::NPM_TOKEN secret is not set! Please configure NPM_TOKEN in repository secrets."
+            exit 1
+          fi
+
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc
+
+          echo "Publishing packages to NPM..."
+          bun x changeset publish
+
+          NEW_VER=$(node -p "require('./packages/sdk/package.json').version")
+          echo "Committing version bump to $NEW_VER and syncing release tags..."
+          git add .
+          git commit -m "chore(release): v$NEW_VER" || echo "No version changes to commit"
+          if ! git rev-parse "v$NEW_VER" >/dev/null 2>&1; then
+            echo "Creating and pushing tag v$NEW_VER to main..."
+            git tag -a "v$NEW_VER" -m "Release v$NEW_VER"
+            git push origin main
+            git push origin "v$NEW_VER"
+          else
+            echo "Tag v$NEW_VER already exists. Pushing main branch..."
+            git push origin main
+          fi
+
