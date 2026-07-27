@@ -1,6 +1,6 @@
 {
   "name": "@thestudioxi/webmcp-adapter-hono",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Hono Framework Adapter for WebMCP",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -18,7 +18,7 @@
     "check": "bun x tsc --noEmit"
   },
   "dependencies": {
-    "@thestudioxi/webmcp": "workspace:^0.1.1"
+    "@thestudioxi/webmcp": "workspace:^0.2.0"
   },
   "peerDependencies": {
     "hono": "^4.0.0"
