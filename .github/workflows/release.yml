@@ -67,6 +67,10 @@ jobs:
           fi
           echo "Changeset files count: $CHANGESET_COUNT"
 
+          # Auto-Patch Fallback:
+          # If no changeset files exist in .changeset/ and the current package.json version is already
+          # published on NPM (meaning code changes landed on main without a manual changeset or version bump),
+          # generate an automatic patch changeset so this CI run bumps packages and releases to NPM.
           if [ "$CHANGESET_COUNT" -eq 0 ] && [ "$CURRENT_VER" = "$NPM_VER" ]; then
             echo "No explicit changeset found and version $CURRENT_VER is already published on NPM."
             echo "Generating automatic patch changeset..."
@@ -105,12 +109,17 @@ EOF
           echo "Publishing packages to NPM..."
           bun x changeset publish
 
-          if [ -n "$(git status --porcelain)" ]; then
-            NEW_VER=$(node -p "require('./packages/sdk/package.json').version")
-            echo "Committing version bump to $NEW_VER..."
-            git add .
-            git commit -m "chore(release): v$NEW_VER"
+          NEW_VER=$(node -p "require('./packages/sdk/package.json').version")
+          echo "Committing version bump to $NEW_VER and syncing release tags..."
+          git add .
+          git commit -m "chore(release): v$NEW_VER" || echo "No version changes to commit"
+          if ! git rev-parse "v$NEW_VER" >/dev/null 2>&1; then
+            echo "Creating and pushing tag v$NEW_VER to main..."
             git tag -a "v$NEW_VER" -m "Release v$NEW_VER"
-            git push origin main --tags
+            git push origin main
+            git push origin "v$NEW_VER"
+          else
+            echo "Tag v$NEW_VER already exists. Pushing main branch..."
+            git push origin main
           fi
 
